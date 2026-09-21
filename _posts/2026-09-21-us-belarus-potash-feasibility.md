@@ -43,6 +43,14 @@ Two problems with this path specifically for a US deal:
 
 For comparison, Canadian potash for the US market moves by direct unit train from Saskatchewan mines straight into the US Midwest — no ocean leg, no port transload, one rail jurisdiction. That single-mode route is a large part of why Canada supplies roughly 11–12 million tonnes a year to the US at a current benchmark price of $305–310/short ton FOB NOLA, "already the most affordable nutrient domestically" per fertilizer-market reporting.
 
+<div style="margin: 1.5em 0;">
+  <iframe src="{{ "/assets/maps/potash-routes.html" | relative_url }}" style="width: 100%; height: 560px; border: 1px solid #ccc; border-radius: 6px;" loading="lazy" title="Potash routes: Belarus vs. Canada to the US"></iframe>
+  <p style="font-size: 0.85em; margin-top: 0.4em;">
+    <a href="{{ "/assets/maps/potash-routes.html" | relative_url }}" target="_blank" rel="noopener">Open the map fullscreen &rarr;</a>
+    Same destination market, three paths: Canada's direct rail route, Belarus's current (longer) route through Russia, and the Klaipėda route Belarus can no longer use.
+  </p>
+</div>
+
 We don't have a precise, route-specific freight quote for the Belarus-to-US path — that's not publicly published — but the closest available benchmark, US Gulf–Europe Panamax dry-bulk freight, ran around $23/tonne in April 2026, which gives a rough sense of the size of just the ocean-freight leg alone, before rail and port handling on both ends are even added in. The more telling evidence is that Belaruskali has reportedly had to discount 50–60% below market price to move volume through this route since 2022 — even at a steep discount, the logistics chain is eating heavily into what the seller nets back.
 
 ## So how "massive" could this realistically be?

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potash Routes: Belarus vs. Canada to the US</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; }
+        #map { height: 100vh; width: 100vw; position: relative; }
+
+        .map-title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 24px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 90vw;
+        }
+        .map-title h1 { margin: 0; font-size: 18px; color: #0f1424; }
+        .map-title p { margin: 4px 0 0; font-size: 12px; color: #555; }
+
+        .data-source {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #444;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            border: 1px solid #ccc;
+            max-width: 320px;
+        }
+
+        .custom-label {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #777;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            font-size: 11px;
+            font-weight: bold;
+            color: #333;
+            padding: 3px 6px;
+        }
+
+        .vehicle-icon {
+            font-size: 24px;
+            text-align: center;
+            line-height: 28px;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+            margin-left: -14px;
+            margin-top: -14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .blocked-icon {
+            font-size: 22px;
+            text-align: center;
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.6));
+            margin-left: -11px;
+            margin-top: -11px;
+        }
+
+        .info.legend {
+            background: rgba(255, 255, 255, 0.92);
+            padding: 10px 12px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            font-size: 12px;
+            line-height: 1.5;
+            max-width: 250px;
+        }
+        .info.legend h4 { margin: 0 0 6px 0; font-size: 13px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="map-title">
+        <h1>Potash to the US Midwest: Two Very Different Paths</h1>
+        <p>Same destination market. Canada ships direct; Belarus's efficient route has been closed since 2022.</p>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="data-source">
+        Data source: Smirnoc Capital analysis, "Can the US Actually Get Meaningful Potash Out of Belarus?" (2026-09-21) &mdash; see post for full sourcing (Argus Media, RFE/RL, OSW Centre for Eastern Studies, FAOSTAT).
+    </div>
+
+    <script>
+        var map = L.map('map', { zoomControl: false });
+
+        map.fitBounds([
+            [24.0, -110.0],
+            [62.0, 40.0]
+        ]);
+
+        L.control.zoom({ position: 'topleft' }).addTo(map);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            maxZoom: 20
+        }).addTo(map);
+
+        var locations = {
+            "Saskatchewan, Canada (mines)": { coords: [52.1332, -106.6700], role: "origin", note: "~11-12 Mt/yr to US" },
+            "Soligorsk, Belarus (mines)": { coords: [52.7867, 27.5411], role: "origin", note: "10-12 Mt/yr production" },
+            "Klaipeda, Lithuania": { coords: [55.7033, 21.1443], role: "blocked", note: "Closed to Belarus since 2022 (EU sanctions). Handled 9-11 Mt/yr pre-2022." },
+            "Ust-Luga, Russia": { coords: [59.6667, 28.3833], role: "transit", note: "Current Belarus export route via Russian rail/port" },
+            "New Orleans (NOLA)": { coords: [29.9511, -90.0715], role: "transit", note: "US Gulf entry point" },
+            "US Midwest (Corn Belt)": { coords: [41.8781, -87.6298], role: "destination", note: "Shared end market for both origins" }
+        };
+
+        var roleColor = { origin: "#5bc0de", transit: "#f0ad4e", blocked: "#d9534f", destination: "#d9534f" };
+
+        for (var key in locations) {
+            var loc = locations[key];
+            var radiusSize = (loc.role === "destination" || loc.role === "blocked") ? 8 : 7;
+            var direction = 'right', offset = [radiusSize + 5, 0];
+
+            if (key === "Ust-Luga, Russia") { direction = 'top'; offset = [0, -radiusSize - 10]; }
+            else if (key === "Klaipeda, Lithuania") { direction = 'left'; offset = [-radiusSize - 10, 0]; }
+            else if (key === "US Midwest (Corn Belt)") { direction = 'bottom'; offset = [0, radiusSize + 10]; }
+            else if (key === "New Orleans (NOLA)") { direction = 'bottom'; offset = [0, radiusSize + 5]; }
+
+            L.circleMarker(loc.coords, {
+                radius: radiusSize, fillColor: roleColor[loc.role], color: "#333", weight: 1, fillOpacity: 0.85
+            }).addTo(map)
+              .bindTooltip(key, { permanent: true, direction: direction, offset: offset, className: 'custom-label' })
+              .bindPopup("<b>" + key + "</b><br>" + loc.note);
+        }
+
+        // Active route: Canada -> US Midwest, direct unit-train rail
+        var canadaRail = [
+            locations["Saskatchewan, Canada (mines)"].coords,
+            [50.4452, -104.6189],
+            [46.8083, -100.7837],
+            [44.9778, -93.2650],
+            [42.0000, -93.5000],
+            locations["US Midwest (Corn Belt)"].coords
+        ];
+
+        // Active route: Belarus -> Russian rail -> Ust-Luga -> transatlantic -> NOLA -> inland to Midwest
+        var belarusRailToPort = [
+            locations["Soligorsk, Belarus (mines)"].coords,
+            [55.1900, 30.2000],
+            [57.8200, 28.3300],
+            [59.9300, 30.3600],
+            locations["Ust-Luga, Russia"].coords
+        ];
+        var belarusOceanToNola = [
+            locations["Ust-Luga, Russia"].coords,
+            [56.0, 12.0],
+            [54.0, 3.0],
+            [50.0, -2.0],
+            [45.0, -20.0],
+            [35.0, -50.0],
+            [25.0, -80.0],
+            locations["New Orleans (NOLA)"].coords
+        ];
+        var nolaInland = [
+            locations["New Orleans (NOLA)"].coords,
+            [30.4515, -91.1871],
+            [35.1495, -90.0490],
+            [38.6270, -90.1994],
+            locations["US Midwest (Corn Belt)"].coords
+        ];
+
+        // Blocked route: Belarus -> Klaipeda (not usable since 2022)
+        var belarusToKlaipeda = [
+            locations["Soligorsk, Belarus (mines)"].coords,
+            [54.6800, 25.2800],
+            locations["Klaipeda, Lithuania"].coords
+        ];
+
+        L.polyline(canadaRail, { color: '#337ab7', weight: 3, opacity: 0.8 }).addTo(map)
+            .bindPopup("Direct unit-train rail, Saskatchewan to US Midwest. No ocean leg, no port transload. ~11-12 Mt/yr.");
+
+        L.polyline(belarusRailToPort, { color: '#f0ad4e', weight: 3, opacity: 0.8 }).addTo(map)
+            .bindPopup("Russian rail, Belarus to Ust-Luga. Shares congested track/port access with Uralkali's own exports.");
+        L.polyline(belarusOceanToNola, { color: '#f0ad4e', weight: 3, opacity: 0.8, dashArray: '1, 5' }).addTo(map)
+            .bindPopup("Transatlantic ocean freight, Ust-Luga to US Gulf. An extra leg Canadian potash never needs.");
+        L.polyline(nolaInland, { color: '#f0ad4e', weight: 3, opacity: 0.8, dashArray: '5, 5' }).addTo(map)
+            .bindPopup("Inland transport, NOLA to Midwest, after two prior handling legs.");
+
+        L.polyline(belarusToKlaipeda, { color: '#d9534f', weight: 3, opacity: 0.85, dashArray: '2, 8' }).addTo(map)
+            .bindPopup("BLOCKED since 2022: EU sanctions closed Belarus's access to Klaipeda, the port that used to handle 9-11 Mt/yr of Belarusian potash. Not restored by the December 2025 US sanctions relief -- that's a separate, EU-controlled restriction.");
+
+        // Blocked marker
+        L.marker([54.68, 25.28], {
+            icon: L.divIcon({ className: 'blocked-icon', html: '&#128683;', iconSize: [24, 24] })
+        }).addTo(map).bindPopup("Route blocked by EU sanctions since 2022");
+
+        function animateVehicle(routePath, iconHtml, durationMs, delayMs) {
+            setTimeout(function () {
+                var marker = L.marker(routePath[0], { icon: L.divIcon({ className: 'vehicle-icon', html: iconHtml, iconSize: [32, 32] }) }).addTo(map);
+                var totalPoints = routePath.length, startTimestamp = null;
+                function step(timestamp) {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    var progress = ((timestamp - startTimestamp) % durationMs) / durationMs;
+                    var segmentProgress = progress * (totalPoints - 1), currentIndex = Math.floor(segmentProgress), nextIndex = Math.min(currentIndex + 1, totalPoints - 1), localProgress = segmentProgress - currentIndex;
+                    var lat = routePath[currentIndex][0] + (routePath[nextIndex][0] - routePath[currentIndex][0]) * localProgress;
+                    var lng = routePath[currentIndex][1] + (routePath[nextIndex][1] - routePath[currentIndex][1]) * localProgress;
+                    marker.setLatLng([lat, lng]);
+                    window.requestAnimationFrame(step);
+                }
+                window.requestAnimationFrame(step);
+            }, delayMs || 0);
+        }
+
+        animateVehicle(canadaRail, '&#128646;', 9000, 0);
+        animateVehicle(belarusRailToPort, '&#128646;', 6000, 0);
+        animateVehicle(belarusOceanToNola, '&#128674;', 16000, 500);
+        animateVehicle(nolaInland, '&#128646;', 6000, 1000);
+
+        var legend = L.control({ position: 'bottomright' });
+        legend.onAdd = function () {
+            var div = L.DomUtil.create('div', 'info legend');
+            div.innerHTML = '<h4>Route Legend</h4>' +
+                '<span style="display:inline-block;width:20px;height:3px;background:#337ab7;margin-right:5px;vertical-align:middle;"></span> Canada &rarr; US (direct rail, active)<br>' +
+                '<span style="display:inline-block;width:20px;height:3px;background:#f0ad4e;margin-right:5px;vertical-align:middle;"></span> Belarus &rarr; US via Russia (active, longer)<br>' +
+                '<span style="display:inline-block;width:20px;height:3px;border-top:2px dashed #d9534f;margin-right:5px;vertical-align:middle;"></span> Belarus &rarr; Klaipeda (blocked since 2022)<br><br>' +
+                '&#128646; Rail &nbsp;&#128674; Ocean freight &nbsp;&#128683; Sanctioned route';
+            return div;
+        };
+        legend.addTo(map);
+    </script>
+</body>
+</html>
