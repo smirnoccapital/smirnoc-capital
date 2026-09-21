@@ -1,0 +1,27 @@
+title: Smirnoc Capital
+description: >-
+  Analysis of agricultural policy, trade, and market developments —
+  and what they mean for farmers.
+baseurl: "/smirnoc-capital"
+url: "https://smirnoccapital.github.io"
+
+theme: minima
+minima:
+  skin: classic
+  nav_pages:
+    - about.md
+    - disclaimer.md
+
+markdown: kramdown
+plugins:
+  - jekyll-feed
+
+show_excerpts: true
+
+exclude:
+  - _social
+  - _meta
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
