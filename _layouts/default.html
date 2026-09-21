@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {%- include head.html -%}
+
+  <body>
+
+    {%- include header.html -%}
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper site-columns">
+        <div class="site-main">
+          {{ content }}
+        </div>
+        {%- include sidebar.html -%}
+      </div>
+    </main>
+
+    {%- include footer.html -%}
+
+    <style>
+      .site-columns {
+        display: flex;
+        gap: 2.5rem;
+        align-items: flex-start;
+      }
+      .site-main {
+        flex: 1;
+        min-width: 0;
+      }
+      .site-sidebar {
+        width: 300px;
+        flex-shrink: 0;
+      }
+      .sidebar-widget {
+        position: sticky;
+        top: 1.5rem;
+      }
+      @media screen and (max-width: 800px) {
+        .site-columns {
+          flex-direction: column;
+        }
+        .site-sidebar {
+          width: 100%;
+        }
+      }
+    </style>
+
+  </body>
+
+</html>
