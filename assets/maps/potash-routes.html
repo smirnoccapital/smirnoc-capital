@@ -117,8 +117,8 @@
         var locations = {
             "Saskatchewan, Canada (mines)": { coords: [52.1332, -106.6700], role: "origin", note: "~11-12 Mt/yr to US" },
             "Soligorsk, Belarus (mines)": { coords: [52.7867, 27.5411], role: "origin", note: "10-12 Mt/yr production" },
-            "Klaipeda, Lithuania": { coords: [55.7033, 21.1443], role: "blocked", note: "Closed to Belarus since 2022 (EU sanctions). Handled 9-11 Mt/yr pre-2022." },
-            "Ust-Luga, Russia": { coords: [59.6667, 28.3833], role: "transit", note: "Current Belarus export route via Russian rail/port" },
+            "Klaipeda, Lithuania": { coords: [55.7033, 21.1443], role: "blocked", note: "Blocked since Feb 2022: Lithuania cancelled its rail transit contract with Belaruskali on national-security grounds, on top of the EU's June 2021 sectoral sanctions. Handled 9-11 Mt/yr pre-ban, over 90% of total Belarusian exports." },
+            "Ust-Luga, Russia": { coords: [59.6667, 28.3833], role: "transit", note: "Current Belarus export route. Not sanctioned -- Russia isn't EU territory and isn't enforcing EU sanctions on Belarus -- but shares congested rail/port capacity with Russia's own (larger) exporter, Uralkali." },
             "New Orleans (NOLA)": { coords: [29.9511, -90.0715], role: "transit", note: "US Gulf entry point" },
             "US Midwest (Corn Belt)": { coords: [42.0000, -93.6000], role: "destination", note: "Illustrative Corn Belt endpoint (central Iowa) — both supply chains ultimately feed the same distributed Midwest farm market, not one city" }
         };
@@ -212,7 +212,7 @@
             .bindPopup("Inland transport, NOLA to Midwest, after two prior handling legs.");
 
         L.polyline(belarusToKlaipeda, { color: '#d9534f', weight: 3, opacity: 0.85, dashArray: '2, 8' }).addTo(map)
-            .bindPopup("BLOCKED since 2022: EU sanctions closed Belarus's access to Klaipeda, the port that used to handle 9-11 Mt/yr of Belarusian potash. Not restored by the December 2025 US sanctions relief -- that's a separate, EU-controlled restriction.");
+            .bindPopup("BLOCKED since Feb 2022: Lithuania cancelled its rail transit contract with Belaruskali on national-security grounds, on top of the EU's June 2021 sectoral sanctions. This closed Klaipeda, the port that used to handle 9-11 Mt/yr of Belarusian potash. Not restored by the December 2025 US sanctions relief -- that's a separate, EU/Lithuania-controlled restriction the US can't unilaterally fix.");
 
         // Blocked marker
         L.marker([54.68, 25.28], {

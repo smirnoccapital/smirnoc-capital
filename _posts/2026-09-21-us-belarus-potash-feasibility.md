@@ -12,6 +12,8 @@ sources_cited:
   - "https://www.globalsecurity.org/wmd/library/news/belarus/2026/belarus-260320-rferl01.htm"
   - "https://www.osw.waw.pl/en/publikacje/osw-commentary/2024-11-20/tough-business-tough-times-belarusian-exports-potash"
   - "https://www.fao.org/faostat/en/#data/RFB"
+  - "https://www.euronews.com/2021/06/24/us-belarus-politics-eu-potash"
+  - "https://interfax.com/newsroom/top-stories/78002/"
 ---
 
 **By Kal Sharven**
@@ -30,11 +32,13 @@ Production doesn't look like the constraint. FAOSTAT data show Belarusian potash
 
 Exports are a different story. FAOSTAT export figures show Belarusian MOP exports falling off a cliff after 2021 — from roughly 11.2 million tonnes in 2021 to 4.2 million (2022), 4.9 million (2023), and 3.6 million tonnes (2024). Production didn't fall nearly that much; the export chain did. That gap is the whole story: Belarus can mine the potash, it just can't move it out the way it used to.
 
-The reason is Lithuania. Klaipėda, Belarus's traditional export port, typically handled 9–11 million tonnes of Belarusian MOP a year — the large majority of total exports — before Lithuania closed the route in 2022 over Belarus's 2020 crackdown on protesters. That route remains shut under EU sanctions regardless of what Washington does, and EU tariffs on Belarusian potash are set to escalate further (roughly €40–45/tonne now, rising to €60 this summer, €80 in 2027, and €350 by 2028), pushing Belarus to look even harder for non-EU buyers.
+The reason is Lithuania, and it's worth being precise about the mechanism, since it's the crux of why one route is closed and another isn't. In June 2021, the EU imposed sectoral sanctions on Belarus — a response to the forced diversion of Ryanair Flight 4978 to arrest a dissident journalist — banning EU entities from importing or trading most grades of Belarusian potash. That alone is an import ban, not necessarily a transit ban: goods merely passing through EU territory to a non-EU buyer aren't automatically caught by it. Lithuania went further on its own initiative: on February 1, 2022, Lithuanian Railways cancelled its 2018 transit contract with Belaruskali outright, after a government commission ruled the agreement conflicted with national security interests. That specific, additional step is what shut Klaipėda — the port that had handled 9–11 million tonnes of Belarusian MOP a year, over 90% of total exports — to Belarusian potash. EU tariffs on what Belarusian potash can still reach EU buyers by other means are also set to escalate further (roughly €40–45/tonne now, rising to €60 this summer, €80 in 2027, and €350 by 2028), pushing Belarus to look even harder for non-EU buyers.
 
 ## What export path is actually available?
 
 Since 2022, Belaruskali has rerouted through Russia: rail to Russian-controlled Baltic terminals — mainly Ust-Luga and St. Petersburg, with Belarus also eyeing its own terminal at nearby Bronka — and in some cases much further afield to Novorossiysk (Black Sea), Astrakhan (Caspian), Murmansk (Arctic), or even Vladivostok (Pacific), with rail hauls ranging from roughly 400 km up to several thousand km depending on the port used, versus the more direct Klaipėda route.
+
+That route is "open" only in the narrow sense that neither the EU import ban nor Lithuania's transit ban has any jurisdiction on Russian soil — Russia isn't an EU member and isn't enforcing EU sanctions against its ally Belarus. It isn't friction-free: Russia itself has been under a broad, separate Western sanctions regime since its 2022 invasion of Ukraine, which can complicate the insurance, financing, and vessel chartering needed for the ocean leg out of a Russian port, on top of the infrastructure-sharing problems below.
 
 Two problems with this path specifically for a US deal:
 
