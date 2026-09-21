@@ -6,6 +6,7 @@ baseurl: "/smirnoc-capital"
 url: "https://smirnoccapital.github.io"
 
 theme: minima
+logo: /assets/images/logo.jpg
 minima:
   skin: classic
   nav_pages:
@@ -21,6 +22,7 @@ show_excerpts: true
 exclude:
   - _social
   - _meta
+  - _research
   - README.md
   - Gemfile
   - Gemfile.lock
