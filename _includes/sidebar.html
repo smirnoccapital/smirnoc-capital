@@ -4,55 +4,311 @@
     <ul class="futures-list" id="futures-list">
       <li class="futures-row futures-loading">Loading prices&hellip;</li>
     </ul>
+
+    <div class="futures-chart-section">
+      <div class="futures-tabs" id="futures-tabs" role="tablist" aria-label="Select commodity chart"></div>
+      <div class="futures-chart-wrap">
+        <svg id="futures-chart" viewBox="0 0 260 140" preserveAspectRatio="none" role="img" aria-labelledby="futures-chart-title">
+          <title id="futures-chart-title">1-year daily closing price</title>
+        </svg>
+        <div class="futures-tooltip" id="futures-tooltip" hidden></div>
+        <p class="futures-chart-msg" id="futures-chart-msg" hidden></p>
+      </div>
+      <button type="button" class="futures-table-toggle" id="futures-table-toggle">View as table</button>
+      <dl class="futures-summary" id="futures-summary" hidden></dl>
+    </div>
+
     <p class="futures-updated" id="futures-updated"></p>
   </div>
 
   <script>
     (function () {
+      var SERIES = {
+        corn:     { color: '#2a78d6' },
+        soybeans: { color: '#eb6834' },
+        soymeal:  { color: '#1baf7a' },
+        soyoil:   { color: '#eda100' }
+      };
+      var ORDER = ['corn', 'soybeans', 'soymeal', 'soyoil'];
+
       var list = document.getElementById('futures-list');
       var updated = document.getElementById('futures-updated');
-      var order = ['corn', 'soybeans', 'soymeal', 'soyoil'];
+      var tabsEl = document.getElementById('futures-tabs');
+      var svg = document.getElementById('futures-chart');
+      var tooltip = document.getElementById('futures-tooltip');
+      var chartMsg = document.getElementById('futures-chart-msg');
+      var tableToggle = document.getElementById('futures-table-toggle');
+      var summaryEl = document.getElementById('futures-summary');
 
-      fetch('{{ "/assets/data/futures.json" | relative_url }}', { cache: 'no-store' })
-        .then(function (res) { return res.json(); })
-        .then(function (data) {
-          var quotes = data.quotes || {};
-          list.innerHTML = '';
+      var quotesByKey = {};
+      var historyByKey = {};
+      var activeKey = 'corn';
+      var showingTable = false;
 
-          order.forEach(function (key) {
-            var q = quotes[key];
-            if (!q || q.price == null) { return; }
+      var SVG_NS = 'http://www.w3.org/2000/svg';
+      var W = 260, H = 140;
+      var PAD = { left: 34, right: 6, top: 10, bottom: 18 };
+      var plotW = W - PAD.left - PAD.right;
+      var plotH = H - PAD.top - PAD.bottom;
 
-            var changeClass = 'flat';
-            var changeSign = '';
-            if (q.change > 0) { changeClass = 'up'; changeSign = '+'; }
-            else if (q.change < 0) { changeClass = 'down'; }
+      function fmt(v, key) {
+        if (v == null) { return '—'; }
+        return key === 'soymeal' ? v.toFixed(1) : v.toFixed(2);
+      }
 
-            var changeText = (q.change != null)
-              ? changeSign + q.change.toFixed(2) + ' (' + changeSign + q.change_pct.toFixed(1) + '%)'
-              : '';
+      function renderList() {
+        list.innerHTML = '';
+        var any = false;
 
-            var li = document.createElement('li');
-            li.className = 'futures-row';
-            li.innerHTML =
-              '<span class="futures-label">' + q.label + '</span>' +
-              '<span class="futures-price">' + q.price.toFixed(2) + '<small>' + q.unit + '</small></span>' +
-              '<span class="futures-change ' + changeClass + '">' + changeText + '</span>';
-            list.appendChild(li);
-          });
+        ORDER.forEach(function (key) {
+          var q = quotesByKey[key];
+          if (!q || q.price == null) { return; }
+          any = true;
 
-          if (!list.children.length) {
-            list.innerHTML = '<li class="futures-row futures-loading">Prices unavailable</li>';
+          var changeClass = 'flat';
+          var changeSign = '';
+          if (q.change > 0) { changeClass = 'up'; changeSign = '+'; }
+          else if (q.change < 0) { changeClass = 'down'; }
+
+          var li = document.createElement('li');
+          li.className = 'futures-row';
+
+          var dot = document.createElement('span');
+          dot.className = 'futures-dot';
+          dot.style.background = SERIES[key].color;
+
+          var label = document.createElement('span');
+          label.className = 'futures-label';
+          label.append(dot, document.createTextNode(q.label));
+
+          var price = document.createElement('span');
+          price.className = 'futures-price';
+          var small = document.createElement('small');
+          small.textContent = q.unit;
+          price.append(document.createTextNode(fmt(q.price, key) + ' '), small);
+
+          var change = document.createElement('span');
+          change.className = 'futures-change ' + changeClass;
+          if (q.change != null) {
+            change.textContent = changeSign + q.change.toFixed(2) + ' (' + changeSign + q.change_pct.toFixed(1) + '%)';
           }
 
-          if (data.updated) {
-            var d = new Date(data.updated);
-            updated.textContent = 'Updated ' + d.toLocaleString();
-          }
-        })
-        .catch(function () {
-          list.innerHTML = '<li class="futures-row futures-loading">Prices unavailable</li>';
+          li.append(label, price, change);
+          list.appendChild(li);
         });
+
+        if (!any) {
+          list.innerHTML = '<li class="futures-row futures-loading">Prices unavailable</li>';
+        }
+      }
+
+      function renderTabs() {
+        tabsEl.innerHTML = '';
+        ORDER.forEach(function (key) {
+          var q = quotesByKey[key];
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'futures-tab' + (key === activeKey ? ' active' : '');
+          btn.setAttribute('role', 'tab');
+          btn.setAttribute('aria-selected', key === activeKey ? 'true' : 'false');
+          btn.style.setProperty('--dot-color', SERIES[key].color);
+          btn.textContent = q ? q.label.replace('Soybean ', '') : key;
+          btn.addEventListener('click', function () {
+            if (activeKey === key) { return; }
+            activeKey = key;
+            renderTabs();
+            renderChart(activeKey);
+            if (showingTable) { renderSummary(activeKey); }
+          });
+          tabsEl.appendChild(btn);
+        });
+      }
+
+      function clearSvg() {
+        while (svg.lastChild) { svg.removeChild(svg.lastChild); }
+        var title = document.createElementNS(SVG_NS, 'title');
+        title.id = 'futures-chart-title';
+        title.textContent = '1-year daily closing price';
+        svg.appendChild(title);
+      }
+
+      function el(tag, attrs) {
+        var node = document.createElementNS(SVG_NS, tag);
+        for (var k in attrs) { node.setAttribute(k, attrs[k]); }
+        return node;
+      }
+
+      function renderChart(key) {
+        clearSvg();
+        chartMsg.hidden = true;
+        tooltip.hidden = true;
+
+        var hist = historyByKey[key];
+        var color = SERIES[key].color;
+
+        if (!hist || !hist.closes || hist.closes.length < 2) {
+          chartMsg.textContent = 'History unavailable yet';
+          chartMsg.hidden = false;
+          return;
+        }
+
+        var closes = hist.closes, dates = hist.dates;
+        var n = closes.length;
+        var min = Math.min.apply(null, closes);
+        var max = Math.max.apply(null, closes);
+        if (min === max) { min -= 1; max += 1; }
+
+        function x(i) { return PAD.left + (i / (n - 1)) * plotW; }
+        function y(v) { return PAD.top + (1 - (v - min) / (max - min)) * plotH; }
+
+        var mid = (min + max) / 2;
+        [min, mid, max].forEach(function (v) {
+          svg.appendChild(el('line', {
+            x1: PAD.left, x2: W - PAD.right, y1: y(v), y2: y(v),
+            stroke: '#e1e0d9', 'stroke-width': 1
+          }));
+          var label = el('text', {
+            x: 2, y: y(v) + 3, 'font-size': 9, fill: '#898781'
+          });
+          label.textContent = fmt(v, key);
+          svg.appendChild(label);
+        });
+
+        var d = closes.map(function (v, i) { return (i === 0 ? 'M' : 'L') + x(i).toFixed(1) + ',' + y(v).toFixed(1); }).join(' ');
+        svg.appendChild(el('path', {
+          d: d, fill: 'none', stroke: color, 'stroke-width': 2,
+          'stroke-linejoin': 'round', 'stroke-linecap': 'round'
+        }));
+
+        svg.appendChild(el('circle', {
+          cx: x(n - 1), cy: y(closes[n - 1]), r: 4, fill: color,
+          stroke: '#fff', 'stroke-width': 2
+        }));
+
+        [0, Math.floor((n - 1) / 2), n - 1].forEach(function (i, idx) {
+          var anchor = idx === 0 ? 'start' : (idx === 1 ? 'middle' : 'end');
+          var xpos = x(i);
+          if (idx === 0) { xpos += 1; }
+          if (idx === 2) { xpos -= 1; }
+          var label = el('text', {
+            x: xpos, y: H - 4, 'font-size': 9, fill: '#898781', 'text-anchor': anchor
+          });
+          label.textContent = new Date(dates[i]).toLocaleDateString(undefined, { month: 'short', year: '2-digit' });
+          svg.appendChild(label);
+        });
+
+        var hoverLine = el('line', { x1: 0, x2: 0, y1: PAD.top, y2: H - PAD.bottom, stroke: '#c3c2b7', 'stroke-width': 1, visibility: 'hidden' });
+        var hoverDot = el('circle', { r: 4, fill: color, stroke: '#fff', 'stroke-width': 2, visibility: 'hidden' });
+        svg.appendChild(hoverLine);
+        svg.appendChild(hoverDot);
+
+        var hitRect = el('rect', { x: PAD.left, y: 0, width: plotW, height: H, fill: 'transparent' });
+        svg.appendChild(hitRect);
+
+        function handleMove(evt) {
+          var rect = svg.getBoundingClientRect();
+          var clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
+          var vx = (clientX - rect.left) / rect.width * W;
+          var idx = Math.round((vx - PAD.left) / plotW * (n - 1));
+          idx = Math.max(0, Math.min(n - 1, idx));
+
+          var px = x(idx), py = y(closes[idx]);
+          hoverLine.setAttribute('x1', px);
+          hoverLine.setAttribute('x2', px);
+          hoverLine.setAttribute('visibility', 'visible');
+          hoverDot.setAttribute('cx', px);
+          hoverDot.setAttribute('cy', py);
+          hoverDot.setAttribute('visibility', 'visible');
+
+          var wrapRect = svg.parentElement.getBoundingClientRect();
+          var pxClient = rect.left + (px / W) * rect.width;
+          tooltip.style.left = Math.max(4, Math.min(rect.width - 90, pxClient - wrapRect.left - 45)) + 'px';
+          tooltip.style.top = '2px';
+          tooltip.innerHTML = '';
+          var strong = document.createElement('strong');
+          strong.textContent = fmt(closes[idx], key) + ' ' + (quotesByKey[key] ? quotesByKey[key].unit : '');
+          var span = document.createElement('span');
+          span.textContent = new Date(dates[idx]).toLocaleDateString();
+          tooltip.append(strong, span);
+          tooltip.hidden = false;
+        }
+
+        function handleLeave() {
+          hoverLine.setAttribute('visibility', 'hidden');
+          hoverDot.setAttribute('visibility', 'hidden');
+          tooltip.hidden = true;
+        }
+
+        hitRect.addEventListener('pointermove', handleMove);
+        hitRect.addEventListener('pointerleave', handleLeave);
+      }
+
+      function renderSummary(key) {
+        var hist = historyByKey[key];
+        summaryEl.innerHTML = '';
+        if (!hist || !hist.closes || !hist.closes.length) {
+          summaryEl.textContent = 'History unavailable yet.';
+          return;
+        }
+        var closes = hist.closes;
+        var first = closes[0], last = closes[closes.length - 1];
+        var high = Math.max.apply(null, closes);
+        var low = Math.min.apply(null, closes);
+        var pctChange = ((last - first) / first) * 100;
+        var unit = quotesByKey[key] ? quotesByKey[key].unit : '';
+
+        [
+          ['1Y high', fmt(high, key) + ' ' + unit],
+          ['1Y low', fmt(low, key) + ' ' + unit],
+          ['1Y change', (pctChange >= 0 ? '+' : '') + pctChange.toFixed(1) + '%'],
+          ['Latest', fmt(last, key) + ' ' + unit]
+        ].forEach(function (pair) {
+          var dt = document.createElement('dt');
+          dt.textContent = pair[0];
+          var dd = document.createElement('dd');
+          dd.textContent = pair[1];
+          summaryEl.append(dt, dd);
+        });
+      }
+
+      tableToggle.addEventListener('click', function () {
+        showingTable = !showingTable;
+        tableToggle.textContent = showingTable ? 'View as chart' : 'View as table';
+        document.querySelector('.futures-chart-wrap').hidden = showingTable;
+        summaryEl.hidden = !showingTable;
+        if (showingTable) { renderSummary(activeKey); }
+      });
+
+      function loadQuotes() {
+        return fetch('{{ "/assets/data/futures.json" | relative_url }}', { cache: 'no-store' })
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            quotesByKey = data.quotes || {};
+            renderList();
+            renderTabs();
+            if (data.updated) {
+              updated.textContent = 'Updated ' + new Date(data.updated).toLocaleString();
+            }
+          })
+          .catch(function () {
+            list.innerHTML = '<li class="futures-row futures-loading">Prices unavailable</li>';
+          });
+      }
+
+      function loadHistory() {
+        return fetch('{{ "/assets/data/futures_history.json" | relative_url }}', { cache: 'no-store' })
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            historyByKey = data.history || {};
+            renderChart(activeKey);
+          })
+          .catch(function () {
+            chartMsg.textContent = 'History unavailable';
+            chartMsg.hidden = false;
+          });
+      }
+
+      loadQuotes().then(loadHistory);
     })();
   </script>
 
@@ -90,6 +346,16 @@
       color: #333;
       font-weight: 600;
       flex: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .futures-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: inline-block;
     }
     .futures-price {
       color: #0f1424;
@@ -120,6 +386,109 @@
       font-size: 11px;
       color: #999;
       text-align: right;
+    }
+
+    .futures-chart-section {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid #f0f1f3;
+    }
+    .futures-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .futures-tab {
+      font-size: 11px;
+      font-weight: 600;
+      color: #52514e;
+      background: #f9f9f7;
+      border: 1px solid #e1e4e8;
+      border-radius: 12px;
+      padding: 4px 10px 4px 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .futures-tab::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--dot-color, #999);
+      display: inline-block;
+    }
+    .futures-tab.active {
+      background: #0f1424;
+      border-color: #0f1424;
+      color: #fff;
+    }
+    .futures-chart-wrap {
+      position: relative;
+    }
+    .futures-chart-wrap svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      touch-action: none;
+    }
+    .futures-chart-msg {
+      margin: 0;
+      padding: 30px 0;
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+    }
+    .futures-tooltip {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1px;
+      background: #0f1424;
+      color: #fff;
+      padding: 4px 7px;
+      border-radius: 5px;
+      font-size: 10px;
+      pointer-events: none;
+      white-space: nowrap;
+      line-height: 1.3;
+    }
+    .futures-tooltip strong {
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .futures-tooltip span {
+      color: #c3c2b7;
+    }
+    .futures-table-toggle {
+      margin-top: 8px;
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 11px;
+      color: #52514e;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .futures-summary {
+      margin: 10px 0 0;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4px 8px;
+      font-size: 12px;
+    }
+    .futures-summary dt {
+      color: #777;
+    }
+    .futures-summary dd {
+      margin: 0;
+      font-weight: 600;
+      color: #0f1424;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
     }
   </style>
 

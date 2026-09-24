@@ -1,8 +1,8 @@
-name: Update futures prices
+name: Update futures 1-year history
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "15 6 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -18,13 +18,13 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Fetch futures prices
-        run: python scripts/fetch_futures.py quotes
+      - name: Fetch 1-year futures history
+        run: python scripts/fetch_futures.py history
 
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add assets/data/futures.json
-          git diff --cached --quiet || git commit -m "Update futures prices"
+          git add assets/data/futures_history.json
+          git diff --cached --quiet || git commit -m "Update futures history"
           git push
