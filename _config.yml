@@ -11,6 +11,7 @@ minima:
   skin: classic
   nav_pages:
     - about.md
+    - services.md
     - disclaimer.md
 
 markdown: kramdown
