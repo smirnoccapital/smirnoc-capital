@@ -8,7 +8,6 @@ source: manual
 sources_cited:
   - "https://foreignpolicy.com/2026/09/23/trump-diesel-export-ban-fuel-prices-energy-crisis/"
   - "https://oilprice.com/Energy/Energy-General/White-House-Rules-Out-Diesel-Export-Ban-as-Prices-Surge-Above-650.html"
-  - "https://discoveryalert.com/analysis/us-diesel-export-ban-september-2026/"
   - "https://www.mondaq.com/unitedstates/renewables/1775348/epa-issues-new-emergency-e15-waiver-and-renewable-fuel-standard-rule-for-2026-2027-amid-rising-fuel-costs-associated-with-iran-war"
   - "https://www.congress.gov/bill/119th-congress/house-bill/1346"
   - "https://ethanolrfa.org/media-and-news/category/news-releases/article/2026/03/u-s-ethanol-production-set-a-record-in-2025-new-data-show"
@@ -33,6 +32,10 @@ sources_cited:
   - "https://www.eia.gov/todayinenergy/detail.php?id=39172"
   - "https://www.eia.gov/todayinenergy/detail.php?id=66764"
   - "https://www.eia.gov/todayinenergy/detail.php?id=66125"
+  - "https://www.eia.gov/todayinenergy/detail.php?id=64786"
+  - "https://www.afpm.org/newsroom/blog/why-some-fuel-markets-are-tighter-others-0"
+  - "https://mexiconewsdaily.com/news/olmeca-refinery-best-production-month/"
+  - "https://www.ajot.com/news/pemex-fuel-imports-to-fall-in-2025-as-domestic-refining-ramps-up"
 ---
 
 **By Kal Sharven**
@@ -47,7 +50,7 @@ On Tuesday, September 22, Trump and Bessent signaled openness to restricting US 
 
 ## Why a refinery can't give you diesel without gasoline
 
-The core objection, made almost identically by Wright, GasBuddy's Patrick De Haan, and Rapidan Energy's Bob McNally, is a refining-technology fact rather than a policy opinion: distillation splits one barrel of crude into a slate of products at once. Every refiner can shift that slate somewhat — cracking severity and crude selection can push more of a barrel toward diesel and less toward gasoline — but not without limit, and not for free.
+The core objection, made almost identically by Wright, GasBuddy's Patrick De Haan, and Rapidan Energy's Bob McNally, is a refining-technology fact rather than a policy opinion: distillation splits one barrel of crude into a slate of products at once. The American Fuel & Petrochemical Manufacturers — the US refiners' own trade association — puts it plainly: refiners can shift yield among gasoline, diesel, and jet fuel in response to market signals, but that shifting is bounded by refinery configuration, crude input grades, and "the high costs of modifying refinery infrastructure," with real transformation costs and minimum lead times attached, and "most operators have already captured the easiest gains." On the secondary conversion units that do most of that shifting, industry technical literature on hydrocrackers puts the typical usable conversion-rate adjustment at roughly 10-20% before other constraints — heater limits, fractionation capacity, catalyst behavior — bind. Refiners are, in fact, leaning on that flexibility right now: EIA data show jet fuel took a record share of US refinery output in 2024 as refiners shifted barrels toward it, evidence the slate does move — just not freely, and not on short notice.
 
 The direction of that shift is visible in EIA's own refinery yield data. The average US barrel yielded 47.8% finished motor gasoline in 2021; by 2025 that had fallen to 45.9%. Over the same years, the distillate yield rose from 29.7% to 30.0%, essentially flat but part of a longer upward drift. Refiners have already been quietly reallocating yield toward diesel as diesel cracks have widened — which is the strongest evidence the yield ratio isn't rigid. It's also evidence of how small the annual movement is: two percentage points of gasoline yield over four years, not a switch refiners can throw overnight.
 
@@ -67,7 +70,7 @@ Put together: even in the scenario the export-ban proponents imagine — a Gulf 
 
 ## What a ban would put at risk, precisely
 
-It's worth being specific about what "restricting exports" would actually restrict, because the exposed volumes are concrete. Mexico was the single largest destination for US distillate fuel oil in June 2026, taking 288,000 barrels per day out of 1,432,000 barrels per day in total US distillate exports that month — about a fifth of everything the US shipped. Mexico's own diesel production has been rising sharply (reportedly up from roughly 162,000 to 281,000 barrels per day between late 2024 and late 2025) but still leaves it reliant on imports to cover the gap with its own consumption. Europe is a smaller but real outlet: EIA's destination data for June 2026 shows the Netherlands alone taking 143,000 barrels per day, with the UK, France, and Spain adding smaller volumes on top, as European buyers — themselves short of refining capacity and increasingly shut out of Russian and Middle Eastern barrels — have pulled US distillate east.
+It's worth being specific about what "restricting exports" would actually restrict, because the exposed volumes are concrete. Mexico was the single largest destination for US distillate fuel oil in June 2026, taking 288,000 barrels per day out of 1,432,000 barrels per day in total US distillate exports that month — about a fifth of everything the US shipped. Mexico's own diesel production has been rising sharply: national output climbed from roughly 162,000 to 280,700 barrels per day between November 2024 and November 2025, as Pemex's national refining system crossed 1 million barrels per day of crude processing for the first time since 2015, and its long-delayed Olmeca refinery at Dos Bocas posted a record 252,000 barrels per day of fuel output in July 2026 — still only about 74% of its 340,000-barrel-per-day design capacity. Even with that ramp-up, Mexico's own energy ministry (Sener) puts combined national gasoline-and-diesel demand at roughly 1.3 million barrels per day in 2026, leaving real, continuing room for imports to fill the gap. Europe is a smaller but real outlet: EIA's destination data for June 2026 shows the Netherlands alone taking 143,000 barrels per day, with the UK, France, and Spain adding smaller volumes on top, as European buyers — themselves short of refining capacity and increasingly shut out of Russian and Middle Eastern barrels — have pulled US distillate east.
 
 None of this is a case that US export customers deserve protection over US drivers. It's a case that these are real, committed flows into markets that would either go unserved or bid the same tight global barrel away from someone else, and that abruptly withdrawing US supply doesn't concentrate more diesel at the US pump — it mostly reshuffles who's short.
 
@@ -91,5 +94,7 @@ This is also not a hypothetical lever — it's already partially in motion. EPA 
 - Whether the diesel export ban idea resurfaces if prices don't come down on their own, and whether any revived version carves out Mexico given how exposed that relationship is
 
 ---
+
+*This is a fast-moving story — the export ban proposal, the price levels, and the E15 legislative timeline could all change. This article may be updated as more information develops.*
 
 *This analysis is for informational purposes only and does not constitute investment advice. See our [disclaimer]({{ "/disclaimer/" | relative_url }}) for details.*
