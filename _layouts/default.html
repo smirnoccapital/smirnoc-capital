@@ -8,11 +8,13 @@
     {%- include header.html -%}
 
     <main class="page-content" aria-label="Content">
-      <div class="wrapper site-columns">
+      <div class="wrapper site-columns{% if page.layout == "post" %} no-sidebar{% endif %}">
         <div class="site-main">
           {{ content }}
         </div>
-        {%- include sidebar.html -%}
+        {%- unless page.layout == "post" -%}
+          {%- include sidebar.html -%}
+        {%- endunless -%}
       </div>
     </main>
 
@@ -27,6 +29,10 @@
       .site-main {
         flex: 1;
         min-width: 0;
+      }
+      .site-columns.no-sidebar .site-main {
+        max-width: 800px;
+        margin: 0 auto;
       }
       .site-sidebar {
         width: 620px;
