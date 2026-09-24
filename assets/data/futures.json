@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-24T21:34:49.381890+00:00",
+  "updated": "2026-09-24T22:04:02.766443+00:00",
   "quotes": {
     "corn": {
       "price": 526.5,
@@ -79,10 +79,10 @@
       "decimals": 2
     },
     "diesel": {
-      "price": 4.5828,
-      "previous_close": 4.8895,
-      "change": -0.3067000000000002,
-      "change_pct": -6.272625012782497,
+      "price": 4.583,
+      "previous_close": 4.89,
+      "change": -0.3069999999999995,
+      "change_pct": -6.278118609406944,
       "market_time": 1790283593,
       "symbol": "HO=F",
       "label": "Diesel (ULSD)",
