@@ -1,7 +1,13 @@
 <aside class="site-sidebar">
-  <div class="sidebar-widget futures-card" id="widget-grains"></div>
-  <div class="sidebar-widget futures-card" id="widget-fertilizer"></div>
-  <div class="sidebar-widget futures-card" id="widget-energy"></div>
+  <div class="futures-columns">
+    <div class="futures-col">
+      <div class="sidebar-widget futures-card" id="widget-grains"></div>
+    </div>
+    <div class="futures-col">
+      <div class="sidebar-widget futures-card" id="widget-fertilizer"></div>
+      <div class="sidebar-widget futures-card" id="widget-energy"></div>
+    </div>
+  </div>
 
   <script>
     (function () {
@@ -26,7 +32,6 @@
         {
           id: 'widget-fertilizer',
           title: 'Fertilizer',
-          note: 'Urea only — no CME-tracked feed exists for DAP or potash.',
           series: [
             { key: 'urea', color: '#2a78d6' }
           ]
@@ -70,13 +75,6 @@
         var h4 = document.createElement('h4');
         h4.textContent = widgetConfig.title;
         root.appendChild(h4);
-
-        if (widgetConfig.note) {
-          var note = document.createElement('p');
-          note.className = 'futures-note';
-          note.textContent = widgetConfig.note;
-          root.appendChild(note);
-        }
 
         var list = document.createElement('ul');
         list.className = 'futures-list';
@@ -396,6 +394,21 @@
   </script>
 
   <style>
+    .futures-columns {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+    .futures-col {
+      flex: 1;
+      min-width: 0;
+    }
+    @media screen and (max-width: 660px) {
+      .futures-columns {
+        flex-direction: column;
+      }
+    }
+
     .futures-card {
       border: 1px solid #e1e4e8;
       border-radius: 8px;
@@ -407,11 +420,6 @@
       margin: 0 0 12px;
       font-size: 15px;
       color: #0f1424;
-    }
-    .futures-note {
-      margin: -6px 0 12px;
-      font-size: 11px;
-      color: #898781;
     }
     .futures-list {
       list-style: none;
