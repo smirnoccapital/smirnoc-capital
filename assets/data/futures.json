@@ -1,0 +1,45 @@
+{
+  "updated": "2026-09-24T18:50:16.486764+00:00",
+  "quotes": {
+    "corn": {
+      "price": 526.5,
+      "previous_close": 529.0,
+      "change": -2.5,
+      "change_pct": -0.4725897920604915,
+      "market_time": 1790273999,
+      "symbol": "ZC=F",
+      "label": "Corn",
+      "unit": "\u00a2/bu"
+    },
+    "soybeans": {
+      "price": 1316.5,
+      "previous_close": 1318.0,
+      "change": -1.5,
+      "change_pct": -0.11380880121396054,
+      "market_time": 1790273996,
+      "symbol": "ZS=F",
+      "label": "Soybeans",
+      "unit": "\u00a2/bu"
+    },
+    "soymeal": {
+      "price": 371.2,
+      "previous_close": 370.6,
+      "change": 0.5999999999999659,
+      "change_pct": 0.16189962223420556,
+      "market_time": 1790273999,
+      "symbol": "ZM=F",
+      "label": "Soybean Meal",
+      "unit": "$/ton"
+    },
+    "soyoil": {
+      "price": 67.47,
+      "previous_close": 67.81,
+      "change": -0.3400000000000034,
+      "change_pct": -0.5014009733077768,
+      "market_time": 1790273999,
+      "symbol": "ZL=F",
+      "label": "Soybean Oil",
+      "unit": "\u00a2/lb"
+    }
+  }
+}

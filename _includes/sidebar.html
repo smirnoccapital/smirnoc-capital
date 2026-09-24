@@ -1,4 +1,128 @@
 <aside class="site-sidebar">
+  <div class="sidebar-widget futures-card">
+    <h4>US Futures</h4>
+    <ul class="futures-list" id="futures-list">
+      <li class="futures-row futures-loading">Loading prices&hellip;</li>
+    </ul>
+    <p class="futures-updated" id="futures-updated"></p>
+  </div>
+
+  <script>
+    (function () {
+      var list = document.getElementById('futures-list');
+      var updated = document.getElementById('futures-updated');
+      var order = ['corn', 'soybeans', 'soymeal', 'soyoil'];
+
+      fetch('{{ "/assets/data/futures.json" | relative_url }}', { cache: 'no-store' })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          var quotes = data.quotes || {};
+          list.innerHTML = '';
+
+          order.forEach(function (key) {
+            var q = quotes[key];
+            if (!q || q.price == null) { return; }
+
+            var changeClass = 'flat';
+            var changeSign = '';
+            if (q.change > 0) { changeClass = 'up'; changeSign = '+'; }
+            else if (q.change < 0) { changeClass = 'down'; }
+
+            var changeText = (q.change != null)
+              ? changeSign + q.change.toFixed(2) + ' (' + changeSign + q.change_pct.toFixed(1) + '%)'
+              : '';
+
+            var li = document.createElement('li');
+            li.className = 'futures-row';
+            li.innerHTML =
+              '<span class="futures-label">' + q.label + '</span>' +
+              '<span class="futures-price">' + q.price.toFixed(2) + '<small>' + q.unit + '</small></span>' +
+              '<span class="futures-change ' + changeClass + '">' + changeText + '</span>';
+            list.appendChild(li);
+          });
+
+          if (!list.children.length) {
+            list.innerHTML = '<li class="futures-row futures-loading">Prices unavailable</li>';
+          }
+
+          if (data.updated) {
+            var d = new Date(data.updated);
+            updated.textContent = 'Updated ' + d.toLocaleString();
+          }
+        })
+        .catch(function () {
+          list.innerHTML = '<li class="futures-row futures-loading">Prices unavailable</li>';
+        });
+    })();
+  </script>
+
+  <style>
+    .futures-card {
+      border: 1px solid #e1e4e8;
+      border-radius: 8px;
+      padding: 20px;
+      background: #fff;
+      margin-bottom: 1.5rem;
+    }
+    .futures-card h4 {
+      margin: 0 0 12px;
+      font-size: 15px;
+      color: #0f1424;
+    }
+    .futures-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .futures-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 7px 0;
+      border-top: 1px solid #f0f1f3;
+      font-size: 13px;
+    }
+    .futures-row:first-child {
+      border-top: none;
+    }
+    .futures-label {
+      color: #333;
+      font-weight: 600;
+      flex: 1;
+    }
+    .futures-price {
+      color: #0f1424;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .futures-price small {
+      font-weight: 400;
+      color: #999;
+      margin-left: 2px;
+    }
+    .futures-change {
+      white-space: nowrap;
+      font-size: 12px;
+      min-width: 88px;
+      text-align: right;
+    }
+    .futures-change.up { color: #1a7f37; }
+    .futures-change.down { color: #cf222e; }
+    .futures-change.flat { color: #777; }
+    .futures-loading {
+      color: #999;
+      font-size: 13px;
+      justify-content: center;
+    }
+    .futures-updated {
+      margin: 10px 0 0;
+      font-size: 11px;
+      color: #999;
+      text-align: right;
+    }
+  </style>
+
   <div class="sidebar-widget follow-card">
     <img src="{{ site.logo | relative_url }}" alt="{{ site.title | escape }}" class="follow-card-logo">
     <h4>Smirnoc Capital</h4>
