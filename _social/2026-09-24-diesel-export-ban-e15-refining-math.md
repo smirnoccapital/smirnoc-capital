@@ -20,18 +20,4 @@ Full breakdown, with sources, on the site.
 
 ## X / Twitter
 
-Thread:
-
-1/ Diesel hit $6.53/gal this week. Trump floated banning US diesel exports Tuesday to fix it. White House walked it back by Wednesday. We ran the refining math on why. 🧵
-
-2/ Refineries can't make diesel in isolation — one barrel of crude becomes gasoline + diesel + jet fuel together, in close to fixed proportions. US refiners are already at 97.8% utilization. No slack to make "more diesel" without cutting something else.
-
-3/ Energy Secretary Wright, API, and GasBuddy's De Haan all said the same thing this week: restrict exports, refiners cut runs, gasoline and jet fuel get squeezed too. Not a policy opinion — refining chemistry.
-
-4/ There's a geography problem too. Gulf Coast refiners = 90%+ of US diesel exports (EIA data: 1,127 of 1,250 kb/d in 2025). But Iowa's diesel comes from Minnesota/Illinois/Oklahoma/Kansas refineries via pipelines that don't touch the Gulf.
-
-5/ A Gulf Coast glut from a lost export market has no efficient path to the Midwest farmers a ban is supposed to protect. Wrong region entirely.
-
-6/ The better lever: E10 → E15. Doesn't need more crude runs — just shrinks the petroleum share of the gasoline pool, freeing refiners to lean toward diesel. Already in motion: EPA's emergency waiver, a year-round E15 bill in the Senate.
-
-7/ But it has a real ceiling: full nationwide E15 needs ~1.75B more gallons of ethanol/year than US plants can currently produce. A real lever, not a full fix. Full analysis + sources: [link]
+Diesel hit $6.53/gal this week. Trump floated banning US exports to fix it, then walked it back within 48hrs. Why: refiners can't isolate diesel from gasoline, and the Gulf Coast (90%+ of exports) doesn't even supply Iowa. E15 is the more coherent lever. Full breakdown: [link]
