@@ -5,6 +5,9 @@ permalink: /about/
 ---
 
 Smirnoc Capital publishes independent analysis on agricultural policy, trade
-developments, and their impact on farmers.
+developments, biofuels markets, and their impact on farmers.
 
-*(Placeholder copy — replace with the firm's real description.)*
+Smirnoc Capital was founded by Kal Sharven, Principal Economist and Founder,
+who has over 10 years of experience in the agriculture space.
+
+**Contact:** 425 W Colonial Dr, Ste 101, Orlando, FL 32804
