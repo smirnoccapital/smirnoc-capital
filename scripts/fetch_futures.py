@@ -14,10 +14,14 @@ import sys
 import urllib.request
 
 SYMBOLS = {
-    "corn": {"symbol": "ZC=F", "label": "Corn", "unit": "¢/bu"},
-    "soybeans": {"symbol": "ZS=F", "label": "Soybeans", "unit": "¢/bu"},
-    "soymeal": {"symbol": "ZM=F", "label": "Soybean Meal", "unit": "$/ton"},
-    "soyoil": {"symbol": "ZL=F", "label": "Soybean Oil", "unit": "¢/lb"},
+    "corn": {"symbol": "ZC=F", "label": "Corn", "unit": "¢/bu", "decimals": 2},
+    "soybeans": {"symbol": "ZS=F", "label": "Soybeans", "unit": "¢/bu", "decimals": 2},
+    "soymeal": {"symbol": "ZM=F", "label": "Soybean Meal", "unit": "$/ton", "decimals": 1},
+    "soyoil": {"symbol": "ZL=F", "label": "Soybean Oil", "unit": "¢/lb", "decimals": 2},
+    "wheat": {"symbol": "ZW=F", "label": "Wheat", "unit": "¢/bu", "decimals": 2},
+    "urea": {"symbol": "UFV=F", "label": "Urea (FOB US Gulf)", "unit": "$/ton", "decimals": 1},
+    "crude": {"symbol": "CL=F", "label": "WTI Crude", "unit": "$/bbl", "decimals": 2},
+    "diesel": {"symbol": "HO=F", "label": "Diesel (ULSD)", "unit": "$/gal", "decimals": 3},
 }
 
 HEADERS = {
@@ -39,9 +43,22 @@ def fetch_chart(symbol, params=""):
 
 
 def fetch_quote(symbol):
-    meta = fetch_chart(symbol)["meta"]
+    result = fetch_chart(symbol, "?range=5d&interval=1d")
+    meta = result["meta"]
     price = meta.get("regularMarketPrice")
     prev_close = meta.get("previousClose") or meta.get("chartPreviousClose")
+    market_time = meta.get("regularMarketTime")
+
+    if price is None:
+        # Some daily-settle contracts (e.g. Urea) don't populate a live
+        # quote; fall back to the most recent close in the short history.
+        closes_raw = result.get("indicators", {}).get("quote", [{}])[0].get("close") or []
+        timestamps = result.get("timestamp") or []
+        recent = [(t, c) for t, c in zip(timestamps, closes_raw) if c is not None]
+        if recent:
+            market_time, price = recent[-1]
+            if len(recent) > 1:
+                prev_close = recent[-2][1]
 
     change = None
     change_pct = None
@@ -54,7 +71,7 @@ def fetch_quote(symbol):
         "previous_close": prev_close,
         "change": change,
         "change_pct": change_pct,
-        "market_time": meta.get("regularMarketTime"),
+        "market_time": market_time,
     }
 
 
@@ -86,7 +103,12 @@ def run(mode, fetch_one, path):
         except Exception as exc:  # noqa: BLE001 - report and keep going
             failures.append(f"{info['symbol']}: {exc}")
             continue
-        item.update(symbol=info["symbol"], label=info["label"], unit=info["unit"])
+        item.update(
+            symbol=info["symbol"],
+            label=info["label"],
+            unit=info["unit"],
+            decimals=info["decimals"],
+        )
         out[mode][key] = item
 
     with open(path, "w") as f:

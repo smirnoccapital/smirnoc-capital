@@ -1,135 +1,53 @@
 <aside class="site-sidebar">
-  <div class="sidebar-widget futures-card">
-    <h4>US Futures</h4>
-    <ul class="futures-list" id="futures-list">
-      <li class="futures-row futures-loading">Loading prices&hellip;</li>
-    </ul>
-
-    <div class="futures-chart-section">
-      <div class="futures-tabs" id="futures-tabs" role="tablist" aria-label="Select commodity chart"></div>
-      <div class="futures-chart-wrap">
-        <svg id="futures-chart" viewBox="0 0 260 140" preserveAspectRatio="none" role="img" aria-labelledby="futures-chart-title">
-          <title id="futures-chart-title">1-year daily closing price</title>
-        </svg>
-        <div class="futures-tooltip" id="futures-tooltip" hidden></div>
-        <p class="futures-chart-msg" id="futures-chart-msg" hidden></p>
-      </div>
-      <button type="button" class="futures-table-toggle" id="futures-table-toggle">View as table</button>
-      <dl class="futures-summary" id="futures-summary" hidden></dl>
-    </div>
-
-    <p class="futures-updated" id="futures-updated"></p>
-  </div>
+  <div class="sidebar-widget futures-card" id="widget-grains"></div>
+  <div class="sidebar-widget futures-card" id="widget-fertilizer"></div>
+  <div class="sidebar-widget futures-card" id="widget-energy"></div>
 
   <script>
     (function () {
-      var SERIES = {
-        corn:     { color: '#2a78d6' },
-        soybeans: { color: '#eb6834' },
-        soymeal:  { color: '#1baf7a' },
-        soyoil:   { color: '#eda100' }
-      };
-      var ORDER = ['corn', 'soybeans', 'soymeal', 'soyoil'];
-
-      var list = document.getElementById('futures-list');
-      var updated = document.getElementById('futures-updated');
-      var tabsEl = document.getElementById('futures-tabs');
-      var svg = document.getElementById('futures-chart');
-      var tooltip = document.getElementById('futures-tooltip');
-      var chartMsg = document.getElementById('futures-chart-msg');
-      var tableToggle = document.getElementById('futures-table-toggle');
-      var summaryEl = document.getElementById('futures-summary');
-
-      var quotesByKey = {};
-      var historyByKey = {};
-      var activeKey = 'corn';
-      var showingTable = false;
-
       var SVG_NS = 'http://www.w3.org/2000/svg';
       var W = 260, H = 140;
       var PAD = { left: 34, right: 6, top: 10, bottom: 18 };
       var plotW = W - PAD.left - PAD.right;
       var plotH = H - PAD.top - PAD.bottom;
 
-      function fmt(v, key) {
-        if (v == null) { return '—'; }
-        return key === 'soymeal' ? v.toFixed(1) : v.toFixed(2);
-      }
-
-      function renderList() {
-        list.innerHTML = '';
-        var any = false;
-
-        ORDER.forEach(function (key) {
-          var q = quotesByKey[key];
-          if (!q || q.price == null) { return; }
-          any = true;
-
-          var changeClass = 'flat';
-          var changeSign = '';
-          if (q.change > 0) { changeClass = 'up'; changeSign = '+'; }
-          else if (q.change < 0) { changeClass = 'down'; }
-
-          var li = document.createElement('li');
-          li.className = 'futures-row';
-
-          var dot = document.createElement('span');
-          dot.className = 'futures-dot';
-          dot.style.background = SERIES[key].color;
-
-          var label = document.createElement('span');
-          label.className = 'futures-label';
-          label.append(dot, document.createTextNode(q.label));
-
-          var price = document.createElement('span');
-          price.className = 'futures-price';
-          var small = document.createElement('small');
-          small.textContent = q.unit;
-          price.append(document.createTextNode(fmt(q.price, key) + ' '), small);
-
-          var change = document.createElement('span');
-          change.className = 'futures-change ' + changeClass;
-          if (q.change != null) {
-            change.textContent = changeSign + q.change.toFixed(2) + ' (' + changeSign + q.change_pct.toFixed(1) + '%)';
-          }
-
-          li.append(label, price, change);
-          list.appendChild(li);
-        });
-
-        if (!any) {
-          list.innerHTML = '<li class="futures-row futures-loading">Prices unavailable</li>';
+      var WIDGETS = [
+        {
+          id: 'widget-grains',
+          title: 'US Grain Futures',
+          series: [
+            { key: 'corn', color: '#2a78d6' },
+            { key: 'soybeans', color: '#eb6834' },
+            { key: 'soymeal', color: '#1baf7a' },
+            { key: 'soyoil', color: '#eda100' },
+            { key: 'wheat', color: '#e87ba4' }
+          ]
+        },
+        {
+          id: 'widget-fertilizer',
+          title: 'Fertilizer',
+          note: 'Urea only — no CME-tracked feed exists for DAP or potash.',
+          series: [
+            { key: 'urea', color: '#2a78d6' }
+          ]
+        },
+        {
+          id: 'widget-energy',
+          title: 'Energy',
+          series: [
+            { key: 'crude', color: '#2a78d6' },
+            { key: 'diesel', color: '#eb6834' }
+          ]
         }
-      }
+      ];
 
-      function renderTabs() {
-        tabsEl.innerHTML = '';
-        ORDER.forEach(function (key) {
-          var q = quotesByKey[key];
-          var btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'futures-tab' + (key === activeKey ? ' active' : '');
-          btn.setAttribute('role', 'tab');
-          btn.setAttribute('aria-selected', key === activeKey ? 'true' : 'false');
-          btn.style.setProperty('--dot-color', SERIES[key].color);
-          btn.textContent = q ? q.label.replace('Soybean ', '') : key;
-          btn.addEventListener('click', function () {
-            if (activeKey === key) { return; }
-            activeKey = key;
-            renderTabs();
-            renderChart(activeKey);
-            if (showingTable) { renderSummary(activeKey); }
-          });
-          tabsEl.appendChild(btn);
-        });
-      }
+      var quotesByKey = {};
+      var historyByKey = {};
+      var dataUpdated = null;
 
-      function clearSvg() {
-        while (svg.lastChild) { svg.removeChild(svg.lastChild); }
-        var title = document.createElementNS(SVG_NS, 'title');
-        title.id = 'futures-chart-title';
-        title.textContent = '1-year daily closing price';
-        svg.appendChild(title);
+      function fmt(v, decimals) {
+        if (v == null) { return '—'; }
+        return v.toFixed(decimals != null ? decimals : 2);
       }
 
       function el(tag, attrs) {
@@ -138,161 +56,329 @@
         return node;
       }
 
-      function renderChart(key) {
-        clearSvg();
-        chartMsg.hidden = true;
+      function buildWidget(widgetConfig) {
+        var root = document.getElementById(widgetConfig.id);
+        if (!root) { return; }
+
+        var colorByKey = {};
+        widgetConfig.series.forEach(function (s) { colorByKey[s.key] = s.color; });
+
+        var state = { activeKey: widgetConfig.series[0].key, showingTable: false };
+
+        root.innerHTML = '';
+
+        var h4 = document.createElement('h4');
+        h4.textContent = widgetConfig.title;
+        root.appendChild(h4);
+
+        if (widgetConfig.note) {
+          var note = document.createElement('p');
+          note.className = 'futures-note';
+          note.textContent = widgetConfig.note;
+          root.appendChild(note);
+        }
+
+        var list = document.createElement('ul');
+        list.className = 'futures-list';
+        root.appendChild(list);
+
+        var chartSection = document.createElement('div');
+        chartSection.className = 'futures-chart-section';
+        root.appendChild(chartSection);
+
+        var tabsEl = document.createElement('div');
+        tabsEl.className = 'futures-tabs';
+        tabsEl.setAttribute('role', 'tablist');
+        tabsEl.setAttribute('aria-label', 'Select commodity chart');
+        if (widgetConfig.series.length > 1) { chartSection.appendChild(tabsEl); }
+
+        var chartWrap = document.createElement('div');
+        chartWrap.className = 'futures-chart-wrap';
+        chartSection.appendChild(chartWrap);
+
+        var svg = document.createElementNS(SVG_NS, 'svg');
+        svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+        svg.setAttribute('preserveAspectRatio', 'none');
+        svg.setAttribute('role', 'img');
+        chartWrap.appendChild(svg);
+
+        var tooltip = document.createElement('div');
+        tooltip.className = 'futures-tooltip';
         tooltip.hidden = true;
+        chartWrap.appendChild(tooltip);
 
-        var hist = historyByKey[key];
-        var color = SERIES[key].color;
+        var chartMsg = document.createElement('p');
+        chartMsg.className = 'futures-chart-msg';
+        chartMsg.hidden = true;
+        chartWrap.appendChild(chartMsg);
 
-        if (!hist || !hist.closes || hist.closes.length < 2) {
-          chartMsg.textContent = 'History unavailable yet';
-          chartMsg.hidden = false;
-          return;
+        var tableToggle = document.createElement('button');
+        tableToggle.type = 'button';
+        tableToggle.className = 'futures-table-toggle';
+        tableToggle.textContent = 'View as table';
+        chartSection.appendChild(tableToggle);
+
+        var summaryEl = document.createElement('dl');
+        summaryEl.className = 'futures-summary';
+        summaryEl.hidden = true;
+        chartSection.appendChild(summaryEl);
+
+        var updated = document.createElement('p');
+        updated.className = 'futures-updated';
+        root.appendChild(updated);
+
+        function renderList() {
+          list.innerHTML = '';
+          var any = false;
+
+          widgetConfig.series.forEach(function (s) {
+            var q = quotesByKey[s.key];
+            if (!q || q.price == null) { return; }
+            any = true;
+
+            var changeClass = 'flat';
+            var changeSign = '';
+            if (q.change > 0) { changeClass = 'up'; changeSign = '+'; }
+            else if (q.change < 0) { changeClass = 'down'; }
+
+            var li = document.createElement('li');
+            li.className = 'futures-row';
+
+            var dot = document.createElement('span');
+            dot.className = 'futures-dot';
+            dot.style.background = s.color;
+
+            var label = document.createElement('span');
+            label.className = 'futures-label';
+            label.append(dot, document.createTextNode(q.label));
+
+            var price = document.createElement('span');
+            price.className = 'futures-price';
+            var small = document.createElement('small');
+            small.textContent = q.unit;
+            price.append(document.createTextNode(fmt(q.price, q.decimals) + ' '), small);
+
+            var change = document.createElement('span');
+            change.className = 'futures-change ' + changeClass;
+            if (q.change != null) {
+              change.textContent = changeSign + q.change.toFixed(q.decimals != null ? q.decimals : 2) +
+                ' (' + changeSign + q.change_pct.toFixed(1) + '%)';
+            }
+
+            li.append(label, price, change);
+            list.appendChild(li);
+          });
+
+          if (!any) {
+            list.innerHTML = '<li class="futures-row futures-loading">Prices unavailable</li>';
+          }
         }
 
-        var closes = hist.closes, dates = hist.dates;
-        var n = closes.length;
-        var min = Math.min.apply(null, closes);
-        var max = Math.max.apply(null, closes);
-        if (min === max) { min -= 1; max += 1; }
-
-        function x(i) { return PAD.left + (i / (n - 1)) * plotW; }
-        function y(v) { return PAD.top + (1 - (v - min) / (max - min)) * plotH; }
-
-        var mid = (min + max) / 2;
-        [min, mid, max].forEach(function (v) {
-          svg.appendChild(el('line', {
-            x1: PAD.left, x2: W - PAD.right, y1: y(v), y2: y(v),
-            stroke: '#e1e0d9', 'stroke-width': 1
-          }));
-          var label = el('text', {
-            x: 2, y: y(v) + 3, 'font-size': 9, fill: '#898781'
+        function renderTabs() {
+          if (widgetConfig.series.length <= 1) { return; }
+          tabsEl.innerHTML = '';
+          widgetConfig.series.forEach(function (s) {
+            var q = quotesByKey[s.key];
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'futures-tab' + (s.key === state.activeKey ? ' active' : '');
+            btn.setAttribute('role', 'tab');
+            btn.setAttribute('aria-selected', s.key === state.activeKey ? 'true' : 'false');
+            btn.style.setProperty('--dot-color', s.color);
+            btn.textContent = q ? q.label.replace('Soybean ', '') : s.key;
+            btn.addEventListener('click', function () {
+              if (state.activeKey === s.key) { return; }
+              state.activeKey = s.key;
+              renderTabs();
+              renderChart(state.activeKey);
+              if (state.showingTable) { renderSummary(state.activeKey); }
+            });
+            tabsEl.appendChild(btn);
           });
-          label.textContent = fmt(v, key);
-          svg.appendChild(label);
-        });
-
-        var d = closes.map(function (v, i) { return (i === 0 ? 'M' : 'L') + x(i).toFixed(1) + ',' + y(v).toFixed(1); }).join(' ');
-        svg.appendChild(el('path', {
-          d: d, fill: 'none', stroke: color, 'stroke-width': 2,
-          'stroke-linejoin': 'round', 'stroke-linecap': 'round'
-        }));
-
-        svg.appendChild(el('circle', {
-          cx: x(n - 1), cy: y(closes[n - 1]), r: 4, fill: color,
-          stroke: '#fff', 'stroke-width': 2
-        }));
-
-        [0, Math.floor((n - 1) / 2), n - 1].forEach(function (i, idx) {
-          var anchor = idx === 0 ? 'start' : (idx === 1 ? 'middle' : 'end');
-          var xpos = x(i);
-          if (idx === 0) { xpos += 1; }
-          if (idx === 2) { xpos -= 1; }
-          var label = el('text', {
-            x: xpos, y: H - 4, 'font-size': 9, fill: '#898781', 'text-anchor': anchor
-          });
-          label.textContent = new Date(dates[i]).toLocaleDateString(undefined, { month: 'short', year: '2-digit' });
-          svg.appendChild(label);
-        });
-
-        var hoverLine = el('line', { x1: 0, x2: 0, y1: PAD.top, y2: H - PAD.bottom, stroke: '#c3c2b7', 'stroke-width': 1, visibility: 'hidden' });
-        var hoverDot = el('circle', { r: 4, fill: color, stroke: '#fff', 'stroke-width': 2, visibility: 'hidden' });
-        svg.appendChild(hoverLine);
-        svg.appendChild(hoverDot);
-
-        var hitRect = el('rect', { x: PAD.left, y: 0, width: plotW, height: H, fill: 'transparent' });
-        svg.appendChild(hitRect);
-
-        function handleMove(evt) {
-          var rect = svg.getBoundingClientRect();
-          var clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
-          var vx = (clientX - rect.left) / rect.width * W;
-          var idx = Math.round((vx - PAD.left) / plotW * (n - 1));
-          idx = Math.max(0, Math.min(n - 1, idx));
-
-          var px = x(idx), py = y(closes[idx]);
-          hoverLine.setAttribute('x1', px);
-          hoverLine.setAttribute('x2', px);
-          hoverLine.setAttribute('visibility', 'visible');
-          hoverDot.setAttribute('cx', px);
-          hoverDot.setAttribute('cy', py);
-          hoverDot.setAttribute('visibility', 'visible');
-
-          var wrapRect = svg.parentElement.getBoundingClientRect();
-          var pxClient = rect.left + (px / W) * rect.width;
-          tooltip.style.left = Math.max(4, Math.min(rect.width - 90, pxClient - wrapRect.left - 45)) + 'px';
-          tooltip.style.top = '2px';
-          tooltip.innerHTML = '';
-          var strong = document.createElement('strong');
-          strong.textContent = fmt(closes[idx], key) + ' ' + (quotesByKey[key] ? quotesByKey[key].unit : '');
-          var span = document.createElement('span');
-          span.textContent = new Date(dates[idx]).toLocaleDateString();
-          tooltip.append(strong, span);
-          tooltip.hidden = false;
         }
 
-        function handleLeave() {
-          hoverLine.setAttribute('visibility', 'hidden');
-          hoverDot.setAttribute('visibility', 'hidden');
+        function clearSvg() {
+          while (svg.lastChild) { svg.removeChild(svg.lastChild); }
+        }
+
+        function renderChart(key) {
+          clearSvg();
+          chartMsg.hidden = true;
           tooltip.hidden = true;
+
+          var q = quotesByKey[key];
+          var hist = historyByKey[key];
+          var color = colorByKey[key];
+          var decimals = q ? q.decimals : 2;
+          var unit = q ? q.unit : '';
+
+          var title = el('title', {});
+          title.textContent = (q ? q.label : key) + ': 1-year daily closing price';
+          svg.appendChild(title);
+          svg.setAttribute('aria-label', title.textContent);
+
+          if (!hist || !hist.closes || hist.closes.length < 2) {
+            chartMsg.textContent = 'History unavailable yet';
+            chartMsg.hidden = false;
+            return;
+          }
+
+          var closes = hist.closes, dates = hist.dates;
+          var n = closes.length;
+          var min = Math.min.apply(null, closes);
+          var max = Math.max.apply(null, closes);
+          if (min === max) { min -= 1; max += 1; }
+
+          function x(i) { return PAD.left + (i / (n - 1)) * plotW; }
+          function y(v) { return PAD.top + (1 - (v - min) / (max - min)) * plotH; }
+
+          var mid = (min + max) / 2;
+          [min, mid, max].forEach(function (v) {
+            svg.appendChild(el('line', {
+              x1: PAD.left, x2: W - PAD.right, y1: y(v), y2: y(v),
+              stroke: '#e1e0d9', 'stroke-width': 1
+            }));
+            var label = el('text', { x: 2, y: y(v) + 3, 'font-size': 9, fill: '#898781' });
+            label.textContent = fmt(v, decimals);
+            svg.appendChild(label);
+          });
+
+          var d = closes.map(function (v, i) {
+            return (i === 0 ? 'M' : 'L') + x(i).toFixed(1) + ',' + y(v).toFixed(1);
+          }).join(' ');
+          svg.appendChild(el('path', {
+            d: d, fill: 'none', stroke: color, 'stroke-width': 2,
+            'stroke-linejoin': 'round', 'stroke-linecap': 'round'
+          }));
+
+          svg.appendChild(el('circle', {
+            cx: x(n - 1), cy: y(closes[n - 1]), r: 4, fill: color,
+            stroke: '#fff', 'stroke-width': 2
+          }));
+
+          [0, Math.floor((n - 1) / 2), n - 1].forEach(function (i, idx) {
+            var anchor = idx === 0 ? 'start' : (idx === 1 ? 'middle' : 'end');
+            var xpos = x(i);
+            if (idx === 0) { xpos += 1; }
+            if (idx === 2) { xpos -= 1; }
+            var label = el('text', { x: xpos, y: H - 4, 'font-size': 9, fill: '#898781', 'text-anchor': anchor });
+            label.textContent = new Date(dates[i]).toLocaleDateString(undefined, { month: 'short', year: '2-digit' });
+            svg.appendChild(label);
+          });
+
+          var hoverLine = el('line', { x1: 0, x2: 0, y1: PAD.top, y2: H - PAD.bottom, stroke: '#c3c2b7', 'stroke-width': 1, visibility: 'hidden' });
+          var hoverDot = el('circle', { r: 4, fill: color, stroke: '#fff', 'stroke-width': 2, visibility: 'hidden' });
+          svg.appendChild(hoverLine);
+          svg.appendChild(hoverDot);
+
+          var hitRect = el('rect', { x: PAD.left, y: 0, width: plotW, height: H, fill: 'transparent' });
+          svg.appendChild(hitRect);
+
+          function handleMove(evt) {
+            var rect = svg.getBoundingClientRect();
+            var clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
+            var vx = (clientX - rect.left) / rect.width * W;
+            var idx = Math.round((vx - PAD.left) / plotW * (n - 1));
+            idx = Math.max(0, Math.min(n - 1, idx));
+
+            var px = x(idx), py = y(closes[idx]);
+            hoverLine.setAttribute('x1', px);
+            hoverLine.setAttribute('x2', px);
+            hoverLine.setAttribute('visibility', 'visible');
+            hoverDot.setAttribute('cx', px);
+            hoverDot.setAttribute('cy', py);
+            hoverDot.setAttribute('visibility', 'visible');
+
+            var wrapRect = chartWrap.getBoundingClientRect();
+            var pxClient = rect.left + (px / W) * rect.width;
+            tooltip.style.left = Math.max(4, Math.min(rect.width - 90, pxClient - wrapRect.left - 45)) + 'px';
+            tooltip.style.top = '2px';
+            tooltip.innerHTML = '';
+            var strong = document.createElement('strong');
+            strong.textContent = fmt(closes[idx], decimals) + ' ' + unit;
+            var span = document.createElement('span');
+            span.textContent = new Date(dates[idx]).toLocaleDateString();
+            tooltip.append(strong, span);
+            tooltip.hidden = false;
+          }
+
+          function handleLeave() {
+            hoverLine.setAttribute('visibility', 'hidden');
+            hoverDot.setAttribute('visibility', 'hidden');
+            tooltip.hidden = true;
+          }
+
+          hitRect.addEventListener('pointermove', handleMove);
+          hitRect.addEventListener('pointerleave', handleLeave);
         }
 
-        hitRect.addEventListener('pointermove', handleMove);
-        hitRect.addEventListener('pointerleave', handleLeave);
-      }
+        function renderSummary(key) {
+          var q = quotesByKey[key];
+          var hist = historyByKey[key];
+          var decimals = q ? q.decimals : 2;
+          var unit = q ? q.unit : '';
+          summaryEl.innerHTML = '';
 
-      function renderSummary(key) {
-        var hist = historyByKey[key];
-        summaryEl.innerHTML = '';
-        if (!hist || !hist.closes || !hist.closes.length) {
-          summaryEl.textContent = 'History unavailable yet.';
-          return;
+          if (!hist || !hist.closes || !hist.closes.length) {
+            summaryEl.textContent = 'History unavailable yet.';
+            return;
+          }
+
+          var closes = hist.closes;
+          var first = closes[0], last = closes[closes.length - 1];
+          var high = Math.max.apply(null, closes);
+          var low = Math.min.apply(null, closes);
+          var pctChange = ((last - first) / first) * 100;
+
+          [
+            ['1Y high', fmt(high, decimals) + ' ' + unit],
+            ['1Y low', fmt(low, decimals) + ' ' + unit],
+            ['1Y change', (pctChange >= 0 ? '+' : '') + pctChange.toFixed(1) + '%'],
+            ['Latest', fmt(last, decimals) + ' ' + unit]
+          ].forEach(function (pair) {
+            var dt = document.createElement('dt');
+            dt.textContent = pair[0];
+            var dd = document.createElement('dd');
+            dd.textContent = pair[1];
+            summaryEl.append(dt, dd);
+          });
         }
-        var closes = hist.closes;
-        var first = closes[0], last = closes[closes.length - 1];
-        var high = Math.max.apply(null, closes);
-        var low = Math.min.apply(null, closes);
-        var pctChange = ((last - first) / first) * 100;
-        var unit = quotesByKey[key] ? quotesByKey[key].unit : '';
 
-        [
-          ['1Y high', fmt(high, key) + ' ' + unit],
-          ['1Y low', fmt(low, key) + ' ' + unit],
-          ['1Y change', (pctChange >= 0 ? '+' : '') + pctChange.toFixed(1) + '%'],
-          ['Latest', fmt(last, key) + ' ' + unit]
-        ].forEach(function (pair) {
-          var dt = document.createElement('dt');
-          dt.textContent = pair[0];
-          var dd = document.createElement('dd');
-          dd.textContent = pair[1];
-          summaryEl.append(dt, dd);
+        tableToggle.addEventListener('click', function () {
+          state.showingTable = !state.showingTable;
+          tableToggle.textContent = state.showingTable ? 'View as chart' : 'View as table';
+          chartWrap.hidden = state.showingTable;
+          summaryEl.hidden = !state.showingTable;
+          if (state.showingTable) { renderSummary(state.activeKey); }
         });
+
+        return {
+          refresh: function () {
+            renderList();
+            renderTabs();
+            renderChart(state.activeKey);
+            if (dataUpdated) {
+              updated.textContent = 'Updated ' + new Date(dataUpdated).toLocaleString();
+            }
+          }
+        };
       }
 
-      tableToggle.addEventListener('click', function () {
-        showingTable = !showingTable;
-        tableToggle.textContent = showingTable ? 'View as chart' : 'View as table';
-        document.querySelector('.futures-chart-wrap').hidden = showingTable;
-        summaryEl.hidden = !showingTable;
-        if (showingTable) { renderSummary(activeKey); }
-      });
+      var instances = WIDGETS.map(buildWidget);
+
+      function refreshAll() {
+        instances.forEach(function (w) { if (w) { w.refresh(); } });
+      }
 
       function loadQuotes() {
         return fetch('{{ "/assets/data/futures.json" | relative_url }}', { cache: 'no-store' })
           .then(function (res) { return res.json(); })
           .then(function (data) {
             quotesByKey = data.quotes || {};
-            renderList();
-            renderTabs();
-            if (data.updated) {
-              updated.textContent = 'Updated ' + new Date(data.updated).toLocaleString();
-            }
+            dataUpdated = data.updated || dataUpdated;
+            refreshAll();
           })
-          .catch(function () {
-            list.innerHTML = '<li class="futures-row futures-loading">Prices unavailable</li>';
-          });
+          .catch(function () { /* keep prior state visible */ });
       }
 
       function loadHistory() {
@@ -300,12 +386,9 @@
           .then(function (res) { return res.json(); })
           .then(function (data) {
             historyByKey = data.history || {};
-            renderChart(activeKey);
+            refreshAll();
           })
-          .catch(function () {
-            chartMsg.textContent = 'History unavailable';
-            chartMsg.hidden = false;
-          });
+          .catch(function () { /* charts show "history unavailable" */ });
       }
 
       loadQuotes().then(loadHistory);
@@ -324,6 +407,11 @@
       margin: 0 0 12px;
       font-size: 15px;
       color: #0f1424;
+    }
+    .futures-note {
+      margin: -6px 0 12px;
+      font-size: 11px;
+      color: #898781;
     }
     .futures-list {
       list-style: none;

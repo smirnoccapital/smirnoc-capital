@@ -1,45 +1,93 @@
 {
-  "updated": "2026-09-24T19:34:28.729864+00:00",
+  "updated": "2026-09-24T19:42:14.155829+00:00",
   "quotes": {
     "corn": {
       "price": 526.5,
-      "previous_close": 529.0,
-      "change": -2.5,
-      "change_pct": -0.4725897920604915,
+      "previous_close": 543.0,
+      "change": -16.5,
+      "change_pct": -3.0386740331491713,
       "market_time": 1790273999,
       "symbol": "ZC=F",
       "label": "Corn",
-      "unit": "\u00a2/bu"
+      "unit": "\u00a2/bu",
+      "decimals": 2
     },
     "soybeans": {
       "price": 1316.5,
-      "previous_close": 1318.0,
-      "change": -1.5,
-      "change_pct": -0.11380880121396054,
+      "previous_close": 1328.0,
+      "change": -11.5,
+      "change_pct": -0.8659638554216867,
       "market_time": 1790273996,
       "symbol": "ZS=F",
       "label": "Soybeans",
-      "unit": "\u00a2/bu"
+      "unit": "\u00a2/bu",
+      "decimals": 2
     },
     "soymeal": {
       "price": 371.2,
-      "previous_close": 370.6,
-      "change": 0.5999999999999659,
-      "change_pct": 0.16189962223420556,
+      "previous_close": 366.6,
+      "change": 4.599999999999966,
+      "change_pct": 1.2547735951991177,
       "market_time": 1790273999,
       "symbol": "ZM=F",
       "label": "Soybean Meal",
-      "unit": "$/ton"
+      "unit": "$/ton",
+      "decimals": 1
     },
     "soyoil": {
       "price": 67.47,
-      "previous_close": 67.81,
-      "change": -0.3400000000000034,
-      "change_pct": -0.5014009733077768,
+      "previous_close": 68.32,
+      "change": -0.8499999999999943,
+      "change_pct": -1.2441451990632237,
       "market_time": 1790273999,
       "symbol": "ZL=F",
       "label": "Soybean Oil",
-      "unit": "\u00a2/lb"
+      "unit": "\u00a2/lb",
+      "decimals": 2
+    },
+    "wheat": {
+      "price": 705.75,
+      "previous_close": 726.75,
+      "change": -21.0,
+      "change_pct": -2.8895768833849327,
+      "market_time": 1790273998,
+      "symbol": "ZW=F",
+      "label": "Wheat",
+      "unit": "\u00a2/bu",
+      "decimals": 2
+    },
+    "urea": {
+      "price": 458.0,
+      "previous_close": 459.0,
+      "change": -1.0,
+      "change_pct": -0.2178649237472767,
+      "market_time": 1790136000,
+      "symbol": "UFV=F",
+      "label": "Urea (FOB US Gulf)",
+      "unit": "$/ton",
+      "decimals": 1
+    },
+    "crude": {
+      "price": 95.38,
+      "previous_close": 95.78,
+      "change": -0.4000000000000057,
+      "change_pct": -0.41762372102736023,
+      "market_time": 1790278332,
+      "symbol": "CL=F",
+      "label": "WTI Crude",
+      "unit": "$/bbl",
+      "decimals": 2
+    },
+    "diesel": {
+      "price": 4.5326,
+      "previous_close": 4.8895,
+      "change": -0.35689999999999955,
+      "change_pct": -7.299314858369968,
+      "market_time": 1790278332,
+      "symbol": "HO=F",
+      "label": "Diesel (ULSD)",
+      "unit": "$/gal",
+      "decimals": 3
     }
   }
 }
