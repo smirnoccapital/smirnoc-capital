@@ -22,6 +22,7 @@ SYMBOLS = {
     "urea": {"symbol": "UFV=F", "label": "Urea (FOB US Gulf)", "unit": "$/ton", "decimals": 1},
     "crude": {"symbol": "CL=F", "label": "WTI Crude", "unit": "$/bbl", "decimals": 2},
     "diesel": {"symbol": "HO=F", "label": "Diesel (ULSD)", "unit": "$/gal", "decimals": 3},
+    "usdcad": {"symbol": "CAD=X", "label": "USD/CAD", "unit": "CAD", "decimals": 4},
 }
 
 HEADERS = {
