@@ -59,6 +59,14 @@ for name, ci, luc in rows:
     kg = ex * G_MJ_TO_KG_MMBTU
     print(f"{name}: {ci} g/MJ -> ex-LUC {ex:.2f} g/MJ = {kg:.1f} kg/mmBtu -> 45Z ${usd_gal_45z(kg):.3f}/gal")
 print("Score with CCS (IRFA: ~30-point cut) from 51:", round(51 - 30, 1), "->", f"${usd_gal_45z(21):.2f}/gal")
+# 45ZCF-GREET (DOE user manual, Sept 2026, Table 10): corn ethanol indirect effects, g/MJ
+ILUC_45Z, OTHER_CROPS, LIVESTOCK = 5.75, -1.58, 0.41
+print(f"45ZCF-GREET ILUC corn ethanol {ILUC_45Z} g/MJ = {ILUC_45Z*G_MJ_TO_KG_MMBTU:.2f} kg/mmBtu; "
+      f"remaining I-effects {OTHER_CROPS+LIVESTOCK:.2f} g/MJ")
+avgA = (55.83 - ILUC_45Z) * G_MJ_TO_KG_MMBTU
+avgB = (55.83 - LUC_GREET3 + OTHER_CROPS + LIVESTOCK) * G_MJ_TO_KG_MMBTU
+print(f"Iowa avg method A (subtract 45Z ILUC): {avgA:.1f}; method B (swap GREET3 LUC for 45Z remaining I-effects): {avgB:.1f}")
+print("Soy RD ILUC 13.57 g/MJ =", round(13.57*G_MJ_TO_KG_MMBTU,1), "kg/mmBtu; soy BD 11.9 g/MJ =", round(11.9*G_MJ_TO_KG_MMBTU,1))
 print("Old-basis check: 55.83 g/MJ incl. LUC = %.1f kg/mmBtu" % (55.83 * G_MJ_TO_KG_MMBTU))
 
 # ---- 1. Back-test ECCC ---------------------------------------------------
@@ -123,17 +131,17 @@ for u, fuel, ci, col in [(e1, "ethanol", 38, C_ETH), (e2, "ethanol", 38, C_ETH),
 def note(txt, pt, xy_text):
     ax.annotate(txt, pt, xytext=xy_text, fontsize=8.5, color=INK,
                 arrowprops=dict(arrowstyle="-", color=MUTED, lw=0.8))
-note("Iowa-average plant (~51):\n$0.00, M = 1.00", (0, 1.0), (0.16, 0.99))
-note("Improved plant (45):\n$%.2f, M = %.2f" % (e1, m_from_usd_gal(e1, "ethanol", 38, 300)),
-     (e1, m_from_usd_gal(e1, "ethanol", 38, 300)), (0.16, 1.42))
-note("Deep-cut plant (30):\n$%.2f, M = %.2f" % (e2, m_from_usd_gal(e2, "ethanol", 38, 300)),
-     (e2, m_from_usd_gal(e2, "ethanol", 38, 300)), (0.16, 1.72))
-note("Soy RD (26.36):\n$%.2f, M = %.2f" % (r1, m_from_usd_gal(r1, "rd", 30, 300)),
-     (r1, m_from_usd_gal(r1, "rd", 30, 300)), (0.56, 1.55))
-ax.text(0.30, 1.82, "Ethanol (CFR CI 38)", color=C_ETH, fontsize=9, fontweight="bold")
-ax.text(0.45, 1.22, "Renewable diesel (CFR CI 30)", color=C_RD, fontsize=9, fontweight="bold")
+note("Iowa-average plant\n(~51 kg CO2e/mmBtu):\n$0.00, M = 1.00", (0, 1.0), (0.16, 0.975))
+note("Improved plant\n(45 kg CO2e/mmBtu):\n$%.2f, M = %.2f" % (e1, m_from_usd_gal(e1, "ethanol", 38, 300)),
+     (e1, m_from_usd_gal(e1, "ethanol", 38, 300)), (0.16, 1.47))
+note("Deep-cut plant\n(30 kg CO2e/mmBtu):\n$%.2f, M = %.2f" % (e2, m_from_usd_gal(e2, "ethanol", 38, 300)),
+     (e2, m_from_usd_gal(e2, "ethanol", 38, 300)), (0.16, 1.70))
+note("Soy RD\n(26.36 kg CO2e/mmBtu):\n$%.2f, M = %.2f" % (r1, m_from_usd_gal(r1, "rd", 30, 300)),
+     (r1, m_from_usd_gal(r1, "rd", 30, 300)), (0.54, 1.52))
+ax.text(0.30, 1.90, "Ethanol (Canadian CFR CI 38 g CO2e/MJ)", color=C_ETH, fontsize=9, fontweight="bold")
+ax.text(0.38, 1.17, "Renewable diesel\n(Canadian CFR CI 30 g CO2e/MJ)", color=C_RD, fontsize=9, fontweight="bold")
 ax.set_xlim(0.0, 0.75); ax.set_ylim(0.95, 2.0)
-ax.set_xlabel("US 45Z credit value, US\$ per gallon (2026 amount \$1.09)", color=MUTED, fontsize=9)
+ax.set_xlabel("US 45Z credit value, US\$ per gallon (2026 amount \$1.09); plant scores in kg CO2e/mmBtu", color=MUTED, fontsize=9)
 ax.set_ylabel("Canadian credit multiplier needed for parity", color=MUTED, fontsize=9)
 ax.set_title("What multiplier equalizes 45Z? (CFR credit at CAD 300/t, USD/CAD 1.414)",
              loc="left", fontsize=10.5, color=INK, fontweight="bold")
