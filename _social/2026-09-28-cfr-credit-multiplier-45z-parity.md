@@ -6,15 +6,15 @@ Post: /_posts/2026-09-28-cfr-credit-multiplier-45z-parity.md
 
 Ottawa is weighing a credit multiplier under the Clean Fuel Regulations so domestic biofuel earns more compliance credits than imports. ECCC says about 1.4 for biomass-based diesel and about 1.14 for ethanol would replicate what US producers get from the 45Z tax credit.
 
-We reverse-engineered both numbers and re-ran them against 45Z as it works after the 2026 rule changes.
+We rebuilt both numbers with 2026 rules ($1.09/gal 45Z amount after inflation indexing, ILUC removed from scoring).
 
-Diesel: ECCC's 1.4 holds up. Parity for soy renewable diesel and biodiesel lands between about 1.34 and 1.47, depending on the 45Z value used and the credit price.
+Diesel: ECCC's 1.4 holds up. Parity for soy renewable diesel and biodiesel lands between about 1.37 and 1.46 at ECCC's CAD 300 credit price.
 
-Ethanol: 1.14 looks low. It implies a US benefit of about 5 cents CAD per litre, roughly what a plant scoring in the mid-40s on the 45Z scale would have earned with indirect land-use change (ILUC) still in the score. The US removed ILUC for fuel made after 2025. Industry analysts put a typical corn ethanol plant near a score of 30, worth about US$0.40 a gallon. At that value, parity is about 1.5 at ECCC's CAD 300 credit price, and about 1.35 at the CAD 430 prices seen this spring.
+Ethanol: it depends on which Iowa plant you compare against. Published Iowa plant scores (IRFA, 2023), converted to 45Z units and stripped of ILUC, put the average plant at about 51 kg CO2e/mmBtu. That's right at the 50 threshold, so the average plant earns roughly nothing from 45Z. ECCC's 1.14 matches a plant scoring about 44 to 45 (about US$0.11/gal). A plant that gets to 30 needs about 1.55. A plant with carbon capture needs about 1.8.
 
-The discussion paper (Dec 2025) predates the US model update (June 2026), which explains most of the gap. Draft regulations haven't been published yet, so there's still time for the number to move.
+So one multiplier has to cover a US benefit that runs from zero to over 60 cents a gallon. And it's sensitive to the credit price: at CAD 200 the numbers climb sharply, at CAD 430 they fall.
 
-Full tables, sensitivities and caveats on the site.
+Full tables, a plain-English explainer on how CFR credits create value, and caveats on the site.
 
 [link]
 
@@ -22,4 +22,4 @@ Full tables, sensitivities and caveats on the site.
 
 ## X / Twitter
 
-ECCC says a 1.14 credit multiplier for ethanol would match US 45Z. Post-2026 rules (no ILUC), a typical Iowa plant's 45Z is ~$0.40/gal, which implies ~1.5 at CAD 300 credits. Diesel's 1.4 holds up. Why the gap: [link]
+ECCC says a 1.14 credit multiplier for ethanol would match US 45Z. We ran it against Iowa plant scores: the average plant sits right at the 45Z threshold and earns ~nothing; 1.14 fits a plant at ~45; carbon capture needs ~1.8. Diesel's 1.4 holds up. [link]
