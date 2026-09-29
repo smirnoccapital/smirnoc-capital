@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Ottawa's Proposed Biofuel Credit Multiplier vs. the US 45Z Credit: 1.14 Fits an Improved Iowa Ethanol Plant, but the Average Plant Earns Almost Nothing"
+title: "Does Ottawa's 1.14 Ethanol Credit Multiplier Match the US 45Z Credit?"
 date: 2026-09-28
 categories: [biofuels, trade-policy, energy-policy]
 excerpt: "Environment and Climate Change Canada says a credit multiplier of about 1.14 for ethanol and 1.4 for biomass-based diesel would replicate the US 45Z credit. We rebuilt both numbers. Diesel holds up. Ethanol depends almost entirely on which Iowa plant you compare against: an average plant scores right at the 45Z threshold and earns close to nothing, while a plant with deep cuts needs a multiplier above 1.5."
