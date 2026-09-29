@@ -12,7 +12,7 @@ Diesel: ECCC's 1.4 holds up. Parity for soy renewable diesel and biodiesel lands
 
 Ethanol: it depends on which Iowa plant you compare against. Published Iowa plant scores (IRFA, 2023), converted to 45Z units and stripped of ILUC, put the average plant at about 51 kg CO2e/mmBtu. That's right at the 50 threshold, so the average plant earns roughly nothing from 45Z. ECCC's 1.14 matches a plant scoring about 44 to 45 (about US$0.11/gal). A plant that gets to 30 needs about 1.55. A plant with carbon capture needs about 1.8.
 
-So one multiplier has to cover a US benefit that runs from zero to over 60 cents a gallon. And it's sensitive to the credit price: at CAD 200 the numbers climb sharply, at CAD 430 they fall.
+So one multiplier has to cover a US benefit that runs from zero to over 60 cents a gallon. And it's sensitive to the credit price: at CAD 200 the numbers climb sharply, at CAD 400 they fall.
 
 Full tables, a plain-English explainer on how CFR credits create value, and caveats on the site.
 

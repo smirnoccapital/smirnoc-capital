@@ -30,8 +30,9 @@ AMOUNT_2026 = 1.09          # $/gal, 45Z alternative amount, 2026 (1.00 x 1.0929
 MJ_PER_MMBTU = 1055.056
 G_MJ_TO_KG_MMBTU = MJ_PER_MMBTU / 1000.0     # 1.05506
 
-def cfr_value(ci, fuel, price):
-    return (CI_REF - ci) * ED[fuel] * price
+def cfr_value(ci, fuel, price, ref=None):
+    ref = CI_REF if ref is None else ref
+    return (ref - ci) * ED[fuel] * price
 
 def usd_gal_45z(rate, amount=AMOUNT_2026):
     return max(0.0, amount * (50 - rate) / 50)
@@ -39,8 +40,8 @@ def usd_gal_45z(rate, amount=AMOUNT_2026):
 def cad_l_45z(rate, amount=AMOUNT_2026):
     return usd_gal_45z(rate, amount) / L_PER_GAL * FX
 
-def multiplier(rate, fuel, ci_can, price, amount=AMOUNT_2026):
-    return 1 + cad_l_45z(rate, amount) / cfr_value(ci_can, fuel, price)
+def multiplier(rate, fuel, ci_can, price, amount=AMOUNT_2026, ref=None):
+    return 1 + cad_l_45z(rate, amount) / cfr_value(ci_can, fuel, price, ref)
 
 # ---- 0. Iowa plant CI from the IRFA (Feb 2023) study --------------------
 print("== Iowa plant CI (IRFA Comparative Economics, Phase 1, Feb 2023) ==")
@@ -84,7 +85,7 @@ print("\nCFR credits per litre, ethanol CI 38:", round((CI_REF-38)*ED['ethanol']
       round((CI_REF-38)*ED['ethanol']*1e6), "credits; value at CAD 300: $%.0f" % ((CI_REF-38)*ED['ethanol']*1e6*300))
 
 # ---- 2. Ethanol grid ------------------------------------------------------
-prices = [200, 300, 350, 430]
+prices = [200, 300, 350, 400]
 eth_rates = [51, 48, 45, 43, 41, 40, 35, 30, 25, 21, 15]
 print("\n== ETHANOL: M needed (Canadian plant CFR CI 38) ==")
 print("45Z rate | US$/gal | CAD c/L | " + " | ".join(f"CAD{p}" for p in prices))
@@ -92,10 +93,10 @@ for c in eth_rates:
     print(f"{c:8} | {usd_gal_45z(c):7.3f} | {cad_l_45z(c)*100:7.1f} | " +
           " | ".join(f"{multiplier(c,'ethanol',38,p):5.2f}" for p in prices))
 
-print("\n== ETHANOL sensitivity to Canadian CFR CI (45Z rate 45 and 30), prices 200/300/430 ==")
+print("\n== ETHANOL sensitivity to Canadian CFR CI (45Z rate 45 and 30), prices 200/300/400 ==")
 for r in (45, 30):
     for ci_can in [30, 34, 38, 42, 46, 50]:
-        print(r, ci_can, [round(multiplier(r, "ethanol", ci_can, p), 2) for p in (200, 300, 430)])
+        print(r, ci_can, [round(multiplier(r, "ethanol", ci_can, p), 2) for p in (200, 300, 400)])
 
 # ---- 3. RD / BD ---------------------------------------------------------
 print("\n== RD (soy, rate 26.36) / BD (soy, rate 20.23); Canadian CFR CI 30 ==")
@@ -111,6 +112,15 @@ for ci_can in [20, 25, 30, 35, 40]:
 print("BD sensitivity to Canadian CFR CI:")
 for ci_can in [20, 25, 30, 35, 40]:
     print(ci_can, {p: round(multiplier(20.23, "bd", ci_can, p), 2) for p in prices})
+
+
+# ---- 3b. Reference-CI sensitivity (Schedule 1 liquid-class reference: 2026 85.3, 2027 84.0, 2029 81.4, 2030+ 80.1) ----
+print("\n== Reference CI sensitivity, CAD 300/t (ECCC used the 2030 value 80.1) ==")
+for label, fuel, r, ci_can in [("Ethanol 45Z rate 45", "ethanol", 45, 38), ("Ethanol 45Z rate 30", "ethanol", 30, 38),
+                               ("Ethanol 45Z rate 21", "ethanol", 21, 38), ("Soy RD 26.36", "rd", 26.36, 30), ("Soy BD 20.23", "bd", 20.23, 30)]:
+    print(label, {ref: round(multiplier(r, fuel, ci_can, 300, ref=ref), 2) for ref in (85.3, 84.0, 81.4, 80.1)})
+print("CFR value per litre ethanol CI 38, CAD 300:", {ref: round(cfr_value(38,'ethanol',300,ref)*100,1) for ref in (85.3,81.4,80.1)}, "c/L")
+print("Slide-9 style check: 75M L ethanol CI 34, ref 85.3 ->", round((85.3-34)*23.419*75), "credits; gasoline obligation 500M L (95-87) ->", round(8*34.69*500), "credits")
 
 # ---- 4. Chart -------------------------------------------------------------
 INK, MUTED, GRID = "#1f2933", "#6b7280", "#e5e7eb"
@@ -143,7 +153,7 @@ ax.text(0.38, 1.17, "Renewable diesel\n(Canadian CFR CI 30 g CO2e/MJ)", color=C_
 ax.set_xlim(0.0, 0.75); ax.set_ylim(0.95, 2.0)
 ax.set_xlabel("US 45Z credit value, US\$ per gallon (2026 amount \$1.09); plant scores in kg CO2e/mmBtu", color=MUTED, fontsize=9)
 ax.set_ylabel("Canadian credit multiplier needed for parity", color=MUTED, fontsize=9)
-ax.set_title("What multiplier equalizes 45Z? (CFR credit at CAD 300/t, USD/CAD 1.414)",
+ax.set_title("What multiplier equalizes 45Z? (CFR credit at CAD 300/t, reference CI 80.1, USD/CAD 1.414)",
              loc="left", fontsize=10.5, color=INK, fontweight="bold")
 ax.grid(axis="y", color=GRID, lw=0.8); ax.set_axisbelow(True)
 for s in ("top", "right"): ax.spines[s].set_visible(False)

@@ -5,3 +5,5 @@ _site/
 vendor/
 .sass-cache/
 _research/*.pdf
+*.pptx
+*.xlsx
