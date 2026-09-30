@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T21:39:38.171753+00:00",
+  "updated": "2026-09-30T22:04:40.078342+00:00",
   "quotes": {
     "corn": {
       "price": 501.25,
@@ -80,9 +80,9 @@
     },
     "diesel": {
       "price": 4.678,
-      "previous_close": 4.685,
-      "change": -0.006999999999999673,
-      "change_pct": -0.14941302027747436,
+      "previous_close": 4.6847,
+      "change": -0.006700000000000372,
+      "change_pct": -0.14301876320789744,
       "market_time": 1790801997,
       "symbol": "HO=F",
       "label": "Diesel (ULSD)",
@@ -90,11 +90,11 @@
       "decimals": 3
     },
     "usdcad": {
-      "price": 1.4228,
+      "price": 1.4233,
       "previous_close": 1.4105,
-      "change": 0.012299999999999978,
-      "change_pct": 0.8720311946118381,
-      "market_time": 1790804375,
+      "change": 0.012799999999999923,
+      "change_pct": 0.907479617157031,
+      "market_time": 1790805876,
       "symbol": "CAD=X",
       "label": "USD/CAD",
       "unit": "CAD",
