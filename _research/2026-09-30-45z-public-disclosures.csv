@@ -1,0 +1,22 @@
+company,period,credit_usd_m,gallons_m,per_gal,amount,implied_rate,implied_g_per_mj,ccs,basis
+Valero,Q1 2026 (10 plants),,,0.1,1.09,45.4,43.0,False,Stated on Q1 call: $0.10/gal booked on 10 plants 'using the original definition of qualified sales'
+Valero,H1 2026 (10 plants),,,0.14,1.09,43.6,41.3,False,Stated on Q2-26 call ('production tax credit we are capturing is $0.14 YTD'); net/gross not stated; H1 total reported ~$119M
+Valero,FY2026 projection,,,0.17,1.09,42.2,40.0,False,Stated on Q2-26 call ('probably $0.17 for the full year')
+Valero,2027-2029 projection,,,0.19,1.09,41.3,39.1,False,"Stated on Q2-26 call; later-year amounts are inflation-indexed above $1.09, so implied score is slightly overstated"
+Andersons,Q2 2026 (4 plants),24.229,181.1,0.134,1.09,43.9,41.6,False,"10-Q other income: clean fuel production credits $24,229K; gallons = ethanol sold (10-Q), may include third-party gallons"
+Andersons,H1 2026 (4 plants),50.39,354.0,0.142,1.09,43.5,41.2,False,"10-Q: $50,390K; 354,037K gal sold"
+REX American,Q2 FY2026 (May-Jul 2026),18.4,70.6,0.261,1.09,38.0,36.1,False,"Release: $18.4M to gross profit; consolidated gallons sold; credit claimed mainly at One Earth, so per-gallon is a lower bound"
+REX American,H1 FY2026 (Feb-Jul 2026),26.0,141.7,0.183,1.09,41.6,39.4,False,$26.0M YTD (Q2 call); 141.7M gal sold (release)
+Highwater Ethanol,"9 mo. to Jul 31 2026, gross",13.1,52.5,0.25,1.09,38.6,36.5,False,Gross $13.1M before broker fees/discounts; gallons ESTIMATED from ~70M/yr rate (10-Q gives no gallons)
+Highwater Ethanol,"9 mo. to Jul 31 2026, net",11.7,52.5,0.223,1.09,39.8,37.7,False,"Net $11.7M after $1.4M of fees, discounts, energy credits, compliance payments; gallons estimated"
+Highwater Ethanol,"Calendar 2025, credits sold",14.307388,70.2,0.204,1.06,40.4,38.3,False,"10-Q: sold $14,307,388 'worth' of 2025 credits May 29 2026; gallons ESTIMATED at permit rate 70.2M"
+Highwater Ethanol,FY to Oct 31 2025 (10 mo. of credit),10.4,58.5,0.178,1.06,41.6,39.4,False,"Recognized $10.4M; credit only from Jan 1 2025, so 10 of 12 months of the 70.2M/yr rate; 2025 score includes ILUC"
+Highwater Ethanol,FY to Oct 31 2025 (12 mo. of gallons),10.4,70.2,0.148,1.06,43.0,40.8,False,Same credit over full-year gallons (lower bound on $/gal)
+Alto Ingredients,2026 stated,,90.0,0.2,1.09,40.8,38.7,False,Stated: ~90M qualifying gal (Columbia + Pekin dry mills) 'at $0.20 per gallon'
+Alto Ingredients,"2026 guidance, net",15.0,90.0,0.167,1.09,42.4,40.1,False,Q1 call: ~$15M net proceeds after all monetization costs on ~90M gal
+"Aemetis (Keyes, CA)",Q1 2026,2.6,13.7,0.19,1.09,41.3,39.1,False,California Ethanol segment only
+"Aemetis (Keyes, CA)",Q2 2026,6.5,15.5,0.419,1.09,30.8,29.2,False,"California Ethanol segment; MVR efficiency project (~15-pt CI cut) targeted for Q2, possible catch-up"
+Green Plains,"H1 2026 (8 plants, 3 with CCS), 10-Q",134.0,334.9,0.4,1.09,31.6,30.0,True,10-Q: credits net of discounts recorded as cost-of-goods reduction; gallons = produced
+Green Plains,"H1 2026 (8 plants, 3 with CCS), release",113.9,334.9,0.34,1.09,34.4,32.6,True,"Earnings release: net of discounts, other costs and SG&A; gallons = produced"
+"Gevo (Richardton ND, CCS)",FY2025,52.0,69.0,0.754,1.06,14.5,13.7,True,$52M of 2025 credits sold; ~69M gal produced (Q4-25 call); CI described as 'low double digits'
+"Gevo (Richardton ND, CCS)",FY2026 guidance,,67.0,0.9,1.09,8.7,8.3,True,"Mgmt: ~$0.90/gal in 2026, ~$0.10 above 2025 (per Q4-25 call)"
