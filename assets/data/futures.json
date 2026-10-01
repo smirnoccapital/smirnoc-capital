@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-01T19:04:56.686816+00:00",
+  "updated": "2026-10-01T19:38:10.172459+00:00",
   "quotes": {
     "corn": {
       "price": 502.0,
@@ -68,33 +68,33 @@
       "decimals": 1
     },
     "crude": {
-      "price": 92.89,
+      "price": 93.15,
       "previous_close": 92.6,
-      "change": 0.29000000000000625,
-      "change_pct": 0.31317494600432644,
-      "market_time": 1790880892,
+      "change": 0.5500000000000114,
+      "change_pct": 0.5939524838013083,
+      "market_time": 1790882885,
       "symbol": "CL=F",
       "label": "WTI Crude",
       "unit": "$/bbl",
       "decimals": 2
     },
     "diesel": {
-      "price": 4.6337,
+      "price": 4.6391,
       "previous_close": 4.7553,
-      "change": -0.12159999999999993,
-      "change_pct": -2.5571467625596687,
-      "market_time": 1790880897,
+      "change": -0.11620000000000008,
+      "change_pct": -2.4435892583012655,
+      "market_time": 1790882862,
       "symbol": "HO=F",
       "label": "Diesel (ULSD)",
       "unit": "$/gal",
       "decimals": 3
     },
     "usdcad": {
-      "price": 1.4235,
+      "price": 1.4225,
       "previous_close": 1.4146,
-      "change": 0.008899999999999908,
-      "change_pct": 0.6291531174890364,
-      "market_time": 1790881497,
+      "change": 0.007900000000000018,
+      "change_pct": 0.5584617559734213,
+      "market_time": 1790883489,
       "symbol": "CAD=X",
       "label": "USD/CAD",
       "unit": "CAD",
