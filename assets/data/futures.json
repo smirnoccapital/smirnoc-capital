@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-03T11:59:00.443975+00:00",
+  "updated": "2026-10-03T14:56:58.393605+00:00",
   "quotes": {
     "corn": {
       "price": 497.75,
@@ -72,7 +72,7 @@
       "previous_close": 92.6,
       "change": -1.4899999999999949,
       "change_pct": -1.6090712742980506,
-      "market_time": 1790974799,
+      "market_time": 1790974800,
       "symbol": "CL=F",
       "label": "WTI Crude",
       "unit": "$/bbl",
