@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-03T01:38:04.555852+00:00",
+  "updated": "2026-10-03T02:03:33.166634+00:00",
   "quotes": {
     "corn": {
       "price": 497.25,
@@ -57,11 +57,11 @@
       "decimals": 2
     },
     "urea": {
-      "price": 431.5,
-      "previous_close": 454.8299865722656,
-      "change": -23.329986572265625,
-      "change_pct": -5.129386201663474,
-      "market_time": 1790827200,
+      "price": 437.0,
+      "previous_close": 431.5,
+      "change": 5.5,
+      "change_pct": 1.2746234067207416,
+      "market_time": 1790913600,
       "symbol": "UFV=F",
       "label": "Urea (FOB US Gulf)",
       "unit": "$/ton",
