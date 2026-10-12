@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-12T21:41:09.700647+00:00",
+  "updated": "2026-10-12T22:05:04.001954+00:00",
   "quotes": {
     "corn": {
       "price": 483.5,
@@ -90,11 +90,11 @@
       "decimals": 3
     },
     "usdcad": {
-      "price": 1.4274,
+      "price": 1.4281,
       "previous_close": 1.4264,
-      "change": 0.001000000000000112,
-      "change_pct": 0.07010656197420864,
-      "market_time": 1791841268,
+      "change": 0.0017000000000000348,
+      "change_pct": 0.11918115535614379,
+      "market_time": 1791842702,
       "symbol": "CAD=X",
       "label": "USD/CAD",
       "unit": "CAD",
