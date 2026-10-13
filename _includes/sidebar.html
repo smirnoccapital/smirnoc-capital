@@ -57,6 +57,9 @@
       var quotesByKey = {};
       var historyByKey = {};
       var dataUpdated = null;
+      var latestMarket = 0;
+
+      function localDate(iso) { return new Date(iso + 'T00:00:00'); }
 
       function fmt(v, decimals) {
         if (v == null) { return '—'; }
@@ -81,7 +84,11 @@
         root.innerHTML = '';
 
         var h4 = document.createElement('h4');
-        h4.textContent = widgetConfig.title;
+        var h4title = document.createElement('span');
+        h4title.textContent = widgetConfig.title;
+        var asOf = document.createElement('span');
+        asOf.className = 'futures-asof';
+        h4.append(h4title, asOf);
         root.appendChild(h4);
 
         var list = document.createElement('ul');
@@ -156,7 +163,15 @@
 
             var label = document.createElement('span');
             label.className = 'futures-label';
-            label.append(dot, document.createTextNode(q.label));
+            var name = document.createElement('span');
+            name.appendChild(document.createTextNode(q.label));
+            label.append(dot, name);
+            if (latestMarket && q.market_time && (latestMarket - q.market_time) > 20 * 3600) {
+              var stale = document.createElement('small');
+              stale.className = 'futures-stale';
+              stale.textContent = 'as of ' + new Date(q.market_time * 1000).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+              name.appendChild(stale);
+            }
 
             var price = document.createElement('span');
             price.className = 'futures-price';
@@ -207,7 +222,15 @@
           while (svg.lastChild) { svg.removeChild(svg.lastChild); }
         }
 
+        function setChartNote(key) {
+          var hist = historyByKey[key];
+          if (hist && hist.dates && hist.dates.length) {
+            updated.textContent = 'Daily closes through ' + localDate(hist.dates[hist.dates.length - 1]).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+          } else { updated.textContent = ''; }
+        }
+
         function renderChart(key) {
+          setChartNote(key);
           clearSvg();
           chartMsg.hidden = true;
           tooltip.hidden = true;
@@ -268,7 +291,7 @@
             if (idx === 0) { xpos += 1; }
             if (idx === 2) { xpos -= 1; }
             var label = el('text', { x: xpos, y: H - 4, 'font-size': 9, fill: '#898781', 'text-anchor': anchor });
-            label.textContent = new Date(dates[i]).toLocaleDateString(undefined, { month: 'short', year: '2-digit' });
+            label.textContent = localDate(dates[i]).toLocaleDateString(undefined, { month: 'short', year: '2-digit' });
             svg.appendChild(label);
           });
 
@@ -303,7 +326,7 @@
             var strong = document.createElement('strong');
             strong.textContent = fmt(closes[idx], decimals) + ' ' + unit;
             var span = document.createElement('span');
-            span.textContent = new Date(dates[idx]).toLocaleDateString();
+            span.textContent = localDate(dates[idx]).toLocaleDateString();
             tooltip.append(strong, span);
             tooltip.hidden = false;
           }
@@ -364,8 +387,9 @@
             renderTabs();
             renderChart(state.activeKey);
             if (dataUpdated) {
-              updated.textContent = 'Updated ' + new Date(dataUpdated).toLocaleString();
+              asOf.textContent = 'Prices as of ' + new Date(dataUpdated).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
             }
+            setChartNote(state.activeKey);
           }
         };
       }
@@ -382,6 +406,7 @@
           .then(function (data) {
             quotesByKey = data.quotes || {};
             dataUpdated = data.updated || dataUpdated;
+            latestMarket = Math.max.apply(null, Object.keys(quotesByKey).map(function (k) { return quotesByKey[k].market_time || 0; }));
             refreshAll();
           })
           .catch(function () { /* keep prior state visible */ });
@@ -425,9 +450,25 @@
       margin-bottom: 1.5rem;
     }
     .futures-card h4 {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
       margin: 0 0 12px;
       font-size: 15px;
       color: #0f1424;
+    }
+    .futures-asof {
+      font-size: 11px;
+      font-weight: 400;
+      color: #777;
+    }
+    .futures-stale {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: #a66;
     }
     .futures-list {
       list-style: none;
