@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-17T04:15:50.259495+00:00",
+  "updated": "2026-10-17T04:53:18.121428+00:00",
   "quotes": {
     "corn": {
       "price": 474.25,
@@ -13,10 +13,10 @@
       "decimals": 2
     },
     "soybeans": {
-      "price": 1260.5,
+      "price": 1261.25,
       "previous_close": 1287.75,
-      "change": -27.25,
-      "change_pct": -2.1160939623374104,
+      "change": -26.5,
+      "change_pct": -2.05785284410794,
       "market_time": 1792174799,
       "symbol": "ZS=F",
       "label": "Soybeans",
@@ -24,10 +24,10 @@
       "decimals": 2
     },
     "soymeal": {
-      "price": 356.7,
+      "price": 357.1,
       "previous_close": 375.6,
-      "change": -18.900000000000034,
-      "change_pct": -5.031948881789146,
+      "change": -18.5,
+      "change_pct": -4.925452609158679,
       "market_time": 1792174799,
       "symbol": "ZM=F",
       "label": "Soybean Meal",
@@ -35,10 +35,10 @@
       "decimals": 1
     },
     "soyoil": {
-      "price": 67.1,
+      "price": 67.13,
       "previous_close": 68.3,
-      "change": -1.2000000000000028,
-      "change_pct": -1.7569546120058608,
+      "change": -1.1700000000000017,
+      "change_pct": -1.7130307467057126,
       "market_time": 1792174796,
       "symbol": "ZL=F",
       "label": "Soybean Oil",
@@ -46,10 +46,10 @@
       "decimals": 2
     },
     "wheat": {
-      "price": 659.75,
+      "price": 660.5,
       "previous_close": 672.25,
-      "change": -12.5,
-      "change_pct": -1.859427296392711,
+      "change": -11.75,
+      "change_pct": -1.7478616586091484,
       "market_time": 1792174798,
       "symbol": "ZW=F",
       "label": "Wheat",
@@ -68,10 +68,10 @@
       "decimals": 1
     },
     "crude": {
-      "price": 99.04,
+      "price": 99.02,
       "previous_close": 93.74,
-      "change": 5.300000000000011,
-      "change_pct": 5.653936419884801,
+      "change": 5.280000000000001,
+      "change_pct": 5.632600810753149,
       "market_time": 1792184398,
       "symbol": "CL=F",
       "label": "WTI Crude",
@@ -79,10 +79,10 @@
       "decimals": 2
     },
     "diesel": {
-      "price": 4.7229,
+      "price": 4.7232,
       "previous_close": 4.7232,
-      "change": -0.000300000000000189,
-      "change_pct": -0.006351626016264164,
+      "change": 0.0,
+      "change_pct": 0.0,
       "market_time": 1792184386,
       "symbol": "HO=F",
       "label": "Diesel (ULSD)",
@@ -94,7 +94,7 @@
       "previous_close": 1.4259,
       "change": -0.012199999999999989,
       "change_pct": -0.8555999719475411,
-      "market_time": 1792184476,
+      "market_time": 1792210878,
       "symbol": "CAD=X",
       "label": "USD/CAD",
       "unit": "CAD",
