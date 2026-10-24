@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-24T06:04:51.653477+00:00",
+  "updated": "2026-10-24T11:21:03.303599+00:00",
   "quotes": {
     "corn": {
       "price": 456.0,
@@ -13,10 +13,10 @@
       "decimals": 2
     },
     "soybeans": {
-      "price": 1268.5,
+      "price": 1256.5,
       "previous_close": 1253.5,
-      "change": 15.0,
-      "change_pct": 1.1966493817311528,
+      "change": 3.0,
+      "change_pct": 0.23932987634623054,
       "market_time": 1792779597,
       "symbol": "ZS=F",
       "label": "Soybeans",
