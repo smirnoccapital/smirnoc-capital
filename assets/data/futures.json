@@ -1,11 +1,11 @@
 {
-  "updated": "2026-11-14T00:33:53.059427+00:00",
+  "updated": "2026-11-14T07:11:35.839273+00:00",
   "quotes": {
     "corn": {
-      "price": 446.0,
+      "price": 445.5,
       "previous_close": 439.25,
-      "change": 6.75,
-      "change_pct": 1.5367103016505406,
+      "change": 6.25,
+      "change_pct": 1.4228799089356858,
       "market_time": 1794597599,
       "symbol": "ZC=F",
       "label": "Corn",
@@ -13,10 +13,10 @@
       "decimals": 2
     },
     "soybeans": {
-      "price": 1232.75,
+      "price": 1231.5,
       "previous_close": 1182.25,
-      "change": 50.5,
-      "change_pct": 4.27151617678156,
+      "change": 49.25,
+      "change_pct": 4.165785578346373,
       "market_time": 1794597598,
       "symbol": "ZS=F",
       "label": "Soybeans",
@@ -24,10 +24,10 @@
       "decimals": 2
     },
     "soymeal": {
-      "price": 330.2,
+      "price": 329.8,
       "previous_close": 320.7,
-      "change": 9.5,
-      "change_pct": 2.962270034299969,
+      "change": 9.100000000000023,
+      "change_pct": 2.83754287496103,
       "market_time": 1794597598,
       "symbol": "ZM=F",
       "label": "Soybean Meal",
@@ -35,10 +35,10 @@
       "decimals": 1
     },
     "soyoil": {
-      "price": 63.73,
+      "price": 63.77,
       "previous_close": 62.03,
-      "change": 1.6999999999999957,
-      "change_pct": 2.7406093825568205,
+      "change": 1.740000000000002,
+      "change_pct": 2.8050943092052263,
       "market_time": 1794597598,
       "symbol": "ZL=F",
       "label": "Soybean Oil",
@@ -46,10 +46,10 @@
       "decimals": 2
     },
     "wheat": {
-      "price": 593.5,
+      "price": 593.25,
       "previous_close": 588.0,
-      "change": 5.5,
-      "change_pct": 0.935374149659864,
+      "change": 5.25,
+      "change_pct": 0.8928571428571428,
       "market_time": 1794597595,
       "symbol": "ZW=F",
       "label": "Wheat",
@@ -57,21 +57,21 @@
       "decimals": 2
     },
     "urea": {
-      "price": 425.25,
-      "previous_close": 425.75,
-      "change": -0.5,
-      "change_pct": -0.11743981209630064,
-      "market_time": 1794459600,
+      "price": 422.25,
+      "previous_close": 425.25,
+      "change": -3.0,
+      "change_pct": -0.7054673721340388,
+      "market_time": 1794546000,
       "symbol": "UFV=F",
       "label": "Urea (FOB US Gulf)",
       "unit": "$/ton",
       "decimals": 1
     },
     "crude": {
-      "price": 88.92,
+      "price": 88.56,
       "previous_close": 86.85,
-      "change": 2.0700000000000074,
-      "change_pct": 2.3834196891191795,
+      "change": 1.710000000000008,
+      "change_pct": 1.9689119170984548,
       "market_time": 1794607200,
       "symbol": "CL=F",
       "label": "WTI Crude",
@@ -79,10 +79,10 @@
       "decimals": 2
     },
     "diesel": {
-      "price": 4.3067,
+      "price": 4.2585,
       "previous_close": 4.2148,
-      "change": 0.09189999999999987,
-      "change_pct": 2.1804118819398277,
+      "change": 0.043699999999999406,
+      "change_pct": 1.0368226250355748,
       "market_time": 1794607196,
       "symbol": "HO=F",
       "label": "Diesel (ULSD)",
@@ -90,11 +90,11 @@
       "decimals": 3
     },
     "usdcad": {
-      "price": 1.4267,
+      "price": 1.4269,
       "previous_close": 1.4119,
-      "change": 0.014800000000000146,
-      "change_pct": 1.0482328776825658,
-      "market_time": 1794609216,
+      "change": 0.015000000000000124,
+      "change_pct": 1.0623981868404366,
+      "market_time": 1794633674,
       "symbol": "CAD=X",
       "label": "USD/CAD",
       "unit": "CAD",
