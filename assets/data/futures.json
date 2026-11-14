@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-14T07:11:35.839273+00:00",
+  "updated": "2026-11-14T14:22:05.217961+00:00",
   "quotes": {
     "corn": {
       "price": 445.5,
@@ -24,10 +24,10 @@
       "decimals": 2
     },
     "soymeal": {
-      "price": 329.8,
+      "price": 327.8,
       "previous_close": 320.7,
-      "change": 9.100000000000023,
-      "change_pct": 2.83754287496103,
+      "change": 7.100000000000023,
+      "change_pct": 2.2139070782662995,
       "market_time": 1794597598,
       "symbol": "ZM=F",
       "label": "Soybean Meal",
@@ -94,7 +94,7 @@
       "previous_close": 1.4119,
       "change": 0.015000000000000124,
       "change_pct": 1.0623981868404366,
-      "market_time": 1794633674,
+      "market_time": 1794650378,
       "symbol": "CAD=X",
       "label": "USD/CAD",
       "unit": "CAD",
