@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-20T21:37:26.343983+00:00",
+  "updated": "2026-11-21T02:54:58.460847+00:00",
   "quotes": {
     "corn": {
       "price": 448.75,
@@ -57,44 +57,44 @@
       "decimals": 2
     },
     "urea": {
-      "price": 420.0,
+      "price": 420.25,
       "previous_close": 420.0,
-      "change": 0.0,
-      "change_pct": 0.0,
-      "market_time": 1795064400,
+      "change": 0.25,
+      "change_pct": 0.05952380952380953,
+      "market_time": 1795150800,
       "symbol": "UFV=F",
       "label": "Urea (FOB US Gulf)",
       "unit": "$/ton",
       "decimals": 1
     },
     "crude": {
-      "price": 83.7,
+      "price": 83.62,
       "previous_close": 85.72,
-      "change": -2.019999999999996,
-      "change_pct": -2.356509566028927,
-      "market_time": 1795210028,
+      "change": -2.0999999999999943,
+      "change_pct": -2.4498366775548233,
+      "market_time": 1795211999,
       "symbol": "CL=F",
       "label": "WTI Crude",
       "unit": "$/bbl",
       "decimals": 2
     },
     "diesel": {
-      "price": 3.8675,
+      "price": 3.8668,
       "previous_close": 4.0818,
-      "change": -0.21430000000000016,
-      "change_pct": -5.25013474447548,
-      "market_time": 1795209996,
+      "change": -0.2150000000000003,
+      "change_pct": -5.267284041354311,
+      "market_time": 1795211999,
       "symbol": "HO=F",
       "label": "Diesel (ULSD)",
       "unit": "$/gal",
       "decimals": 3
     },
     "usdcad": {
-      "price": 1.4353,
+      "price": 1.4339,
       "previous_close": 1.4269,
-      "change": 0.008399999999999963,
-      "change_pct": 0.5886887658560489,
-      "market_time": 1795210645,
+      "change": 0.006999999999999895,
+      "change_pct": 0.49057397154670224,
+      "market_time": 1795214189,
       "symbol": "CAD=X",
       "label": "USD/CAD",
       "unit": "CAD",
