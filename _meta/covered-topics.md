@@ -9,3 +9,4 @@ re-cover the same development. One line per published post.
 | 2026-09-23 | Productivity Mega Deduction (100% immediate expensing) vs. Budget 2025 AII, farm scenario modelling | 2026-09-23-productivity-mega-deduction-farm-scenarios |
 | 2026-09-28 | ECCC CFR credit multiplier (1.14 ethanol / 1.4 biomass-based diesel) vs. US 45Z parity math (rev. 2026-09-30: adds ECCC approved-CI list proxy + 45Z disclosure cross-check) | 2026-09-28-cfr-credit-multiplier-45z-parity |
 | 2026-10-20 | US ARC-CO projected program year 2026 payments by county (corn, soybeans, wheat) at USDA projected 2026/27 prices, 2025 yields as stand-in | 2026-10-20-arc-co-projected-payments |
+| 2026-11-25 | USTR proposed Section 301 structural excess-capacity tariffs (14 economies): effective US tariff rates now vs proposed from Census HS10 data, exemptions, farm-input exposure | 2026-11-25-section-301-excess-capacity-effective-rates |
